@@ -6,6 +6,10 @@ services:
     build:
       dockerfile: ./api/Dockerfile
       context: .
+    environment:
+      WAIT_HOSTS: mariadb:3306
+    depends_on:
+      - mariadb
     ports:
       - 3000:3000
 
@@ -14,9 +18,9 @@ services:
     env_file:
       - ./.env
     volumes:
-      - are_you_hitler:/var/lib/mysql
+      - db:/var/lib/mysql
     ports:
       - 3306:3306
 
 volumes:
-  are_you_hitler:
+  db:
