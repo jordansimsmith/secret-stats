@@ -3,12 +3,12 @@ FROM golang AS builder
 
 WORKDIR /app
 
-COPY api/go.mod .
-COPY api/go.sum .
+COPY go.mod .
+COPY go.sum .
 
 RUN go mod download
 
-COPY api/. .
+COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 

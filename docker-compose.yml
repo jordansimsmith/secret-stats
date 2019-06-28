@@ -3,9 +3,9 @@ version: '3'
 services:
   api:
     container_name: api
-    build:
-      dockerfile: ./api/Dockerfile
-      context: .
+    build: ./api
+    env_file:
+      ./.env
     environment:
       WAIT_HOSTS: mariadb:3306
     depends_on:
