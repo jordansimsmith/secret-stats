@@ -38,7 +38,7 @@ The generated user_id is returned in the response.
 */
 func (uc *UserController) Create(c *gin.Context) {
 
-	// unmarshall json payload
+	// unmarshal json payload
 	var user models.User
 	if c.BindJSON(&user) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid user object"})
@@ -48,14 +48,14 @@ func (uc *UserController) Create(c *gin.Context) {
 
 	// input sanitisation
 	if err := user.Validate(); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		c.Abort()
 		return
 	}
 
 	// create user
 	if err := uc.db.Create(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		c.Abort()
 		return
 	}
@@ -83,7 +83,7 @@ func (uc *UserController) All(c *gin.Context) {
 	// find users from db
 	var users []models.User
 	if err := uc.db.Where(searchParams).Find(&users).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		c.Abort()
 		return
 	}
@@ -114,7 +114,7 @@ func (uc *UserController) One(c *gin.Context) {
 		if gorm.IsRecordNotFoundError(err) {
 			c.JSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("user with id %d not found.", uid)})
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"message": err})
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		}
 		c.Abort()
 		return
@@ -122,4 +122,52 @@ func (uc *UserController) One(c *gin.Context) {
 
 	// success
 	c.JSON(http.StatusOK, user)
+}
+
+/*
+Method Update is responsible for handling the PUT /users/:user_id endpoint.
+It performs input sanitisation and updates the user by the values provided.
+*/
+func (uc *UserController) Update(c *gin.Context) {
+
+	// extract user_id from path
+	uid, err := strconv.ParseUint(c.Param("user_id"), 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid user_id in path"})
+		c.Abort()
+		return
+	}
+
+	// unmarshal json payload
+	var user models.User
+	if c.BindJSON(&user) != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.Abort()
+		return
+	}
+
+	// input sanitisation
+	if err := user.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.Abort()
+		return
+	}
+
+	// check if user exists
+	if uc.db.First(&models.User{}, uid).RecordNotFound() {
+		c.JSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("user with id %d not found.", uid)})
+		c.Abort()
+		return
+	}
+
+	// update user
+	user.ID = uint(uid)
+	if err := uc.db.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.Abort()
+		return
+	}
+
+	// success
+	c.Status(http.StatusNoContent)
 }
