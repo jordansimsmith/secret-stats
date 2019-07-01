@@ -44,10 +44,11 @@ paths:
             Location:
               type: string
               description: Location of the newly created user
-          type: object
-          properties:
-            user_id:
-              type: number
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: number
         400:
           description: Bad Request
         500:
@@ -74,9 +75,9 @@ paths:
       responses:
         200:
           description: OK
-          type: array
-          items:
-            schema:
+          schema:
+            type: array
+            items:
               $ref: '#/definitions/User'
         500:
           description: Internal Server Error
@@ -171,7 +172,7 @@ paths:
           description: Game object to be registered
           required: true
           schema:
-            $ref: '#/definitions/NewGame'
+            $ref: '#/definitions/GameWithPlayers'
       responses:
         201:
           description: Created
@@ -179,10 +180,11 @@ paths:
             Location:
               type: string
               description: Location of the newly created game
-          type: object
-          properties:
-            game_id:
-              type: number
+          schema:
+            type: object
+            properties:
+              game_id:
+                type: number
         400:
           description: Bad Request
         500:
@@ -204,10 +206,10 @@ paths:
       responses:
         200:
           description: OK
-          type: array
-          items:
-            schema:
-              $ref: '#/definitions/Game'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GameWithID'
         404:
           description: Not Found
         500:
@@ -217,9 +219,9 @@ paths:
     get:
       tags:
         - game
-      summary: Find a game by ID
-      operationId: readGame
-      produces:
+      summary: Find a game by ID 
+      operationId: readGame 
+      produces: 
         - application/json
       parameters:
         - in: path
@@ -231,7 +233,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/Game'
+            $ref: '#/definitions/FullGame'
         404:
           description: Not Found
         500:
@@ -257,7 +259,7 @@ paths:
           description: Updated game details
           required: true
           schema:
-            $ref: '#/definitions/NewGame'
+            $ref: '#/definitions/GameWithPlayers'
       responses:
         204:
           description: No Content
@@ -282,8 +284,8 @@ paths:
       responses:
         204:
           description: No Content
-        404:
-          description: Not Found
+        404: 
+          description: Not Found 
         500:
           description: Internal Server Error
 
@@ -293,10 +295,10 @@ definitions:
     properties:
       first_name:
         type: string
-        example: Adolf
+        example: Joseph
       last_name:
         type: string
-        example: Hitler
+        example: Stalin
 
   User:
     allOf:
@@ -307,33 +309,53 @@ definitions:
             example: 1
       - $ref: '#/definitions/NewUser'
 
-  NewGame:
+  Game: 
     type: object
     properties:
       timestamp:
         type: number
         description: UNIX timestamp (seconds past Epoch)
         example: 1561681534
-      winner:
+      winner: 
         type: string
         description: Either 'fascist' or 'liberal'
         example: 'facist'
       number_of_players:
         type: number
         example: 1
-      players:
-        type: array
-        items:
-          $ref: '#/definitions/Player'
 
-  Game:
+  GameWithID: # GET /games return
+    allOf:
+      - type: object
+        properties:
+          game_id:
+            type: number
+      - $ref: '#/definitions/Game'
+
+  GameWithPlayers: # POST, PUT /games /games:gameid
+    allOf:
+      - $ref: '#/definitions/Game'
+      - type: object
+        properties:
+          players:
+            type: array
+            items:
+              $ref: '#/definitions/Player'
+
+  FullGame:
     allOf:
       - type: object
         properties:
           game_id:
             type: number
             example: 600
-      - $ref: '#/definitions/NewGame'
+      - $ref: '#/definitions/Game'
+      - type: object
+        properties:
+          players:
+            type: array
+            items:
+              $ref: '#/definitions/PlayerWithUserInformation'
 
   Player:
     type: object
@@ -349,3 +371,10 @@ definitions:
         type: boolean
         desription: Was this player hitler?
         example: true
+
+  PlayerWithUserInformation:
+    allOf:
+      - $ref: '#/definitions/Player'
+      - $ref: '#/definitions/NewUser'
+
+
