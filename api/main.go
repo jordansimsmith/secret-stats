@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/jordansimsmith/are-you-hitler/api/controllers"
 	"github.com/jordansimsmith/are-you-hitler/api/models"
 )
 
@@ -35,11 +36,15 @@ func main() {
 
 	// gin initialisation
 	r := gin.Default()
+
+	user := controllers.NewUserController(db)
+
 	r.GET("/hello", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "hello world!",
 		})
 	})
+	r.POST("/users", user.Create)
 
 	r.Run(":3000")
 }
