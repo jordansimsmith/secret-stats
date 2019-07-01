@@ -46,6 +46,7 @@ func main() {
 	})
 	r.POST("/users", user.Create)
 	r.GET("/users", user.All)
+	r.GET("/users/:user_id", user.One)
 
 	r.Run(":3000")
 }

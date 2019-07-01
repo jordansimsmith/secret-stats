@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -88,5 +89,37 @@ func (uc *UserController) All(c *gin.Context) {
 	}
 
 	// success
-	c.JSON(http.StatusCreated, users)
+	c.JSON(http.StatusOK, users)
+}
+
+/*
+Method One is responsible for handling the GET /users/:user_id endpoint.
+It returns the user identified by the id provided.
+*/
+func (uc *UserController) One(c *gin.Context) {
+
+	// extract user_id from path
+	uid, err := strconv.ParseUint(c.Param("user_id"), 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid user_id in path"})
+		c.Abort()
+		return
+	}
+
+	// find user from db
+	var user models.User
+	if err := uc.db.First(&user, uid).Error; err != nil {
+
+		// if record not found
+		if gorm.IsRecordNotFoundError(err) {
+			c.JSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("user with id %d not found.", uid)})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err})
+		}
+		c.Abort()
+		return
+	}
+
+	// success
+	c.JSON(http.StatusOK, user)
 }
