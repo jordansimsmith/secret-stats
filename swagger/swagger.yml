@@ -172,7 +172,7 @@ paths:
           description: Game object to be registered
           required: true
           schema:
-            $ref: '#/definitions/GameWithPlayers'
+            $ref: '#/definitions/NewGame'
       responses:
         201:
           description: Created
@@ -209,7 +209,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/GameWithID'
+              $ref: '#/definitions/Game'
         404:
           description: Not Found
         500:
@@ -233,7 +233,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/FullGame'
+            $ref: '#/definitions/Game'
         404:
           description: Not Found
         500:
@@ -259,7 +259,7 @@ paths:
           description: Updated game details
           required: true
           schema:
-            $ref: '#/definitions/GameWithPlayers'
+            $ref: '#/definitions/NewGame'
       responses:
         204:
           description: No Content
@@ -309,7 +309,7 @@ definitions:
             example: 1
       - $ref: '#/definitions/NewUser'
 
-  Game: 
+  NewGame: 
     type: object
     properties:
       timestamp:
@@ -323,39 +323,18 @@ definitions:
       number_of_players:
         type: number
         example: 1
+      players:
+        type: array
+        items:
+          $ref: '#/definitions/Player'
 
-  GameWithID: # GET /games return
+  Game:
     allOf:
       - type: object
         properties:
           game_id:
             type: number
-      - $ref: '#/definitions/Game'
-
-  GameWithPlayers: # POST, PUT /games /games:gameid
-    allOf:
-      - $ref: '#/definitions/Game'
-      - type: object
-        properties:
-          players:
-            type: array
-            items:
-              $ref: '#/definitions/Player'
-
-  FullGame:
-    allOf:
-      - type: object
-        properties:
-          game_id:
-            type: number
-            example: 600
-      - $ref: '#/definitions/Game'
-      - type: object
-        properties:
-          players:
-            type: array
-            items:
-              $ref: '#/definitions/PlayerWithUserInformation'
+      - $ref: '#/definitions/NewGame'
 
   Player:
     type: object
@@ -371,10 +350,3 @@ definitions:
         type: boolean
         desription: Was this player hitler?
         example: true
-
-  PlayerWithUserInformation:
-    allOf:
-      - $ref: '#/definitions/Player'
-      - $ref: '#/definitions/NewUser'
-
-
