@@ -171,3 +171,36 @@ func (uc *UserController) Update(c *gin.Context) {
 	// success
 	c.Status(http.StatusNoContent)
 }
+
+/*
+Method Delete is responsible for handling the DELETE /users/:user_id endpoint.
+It deletes the user from the database.
+*/
+func (uc *UserController) Delete(c *gin.Context) {
+
+	// extract user_id from path
+	uid, err := strconv.ParseUint(c.Param("user_id"), 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid user_id in path"})
+		c.Abort()
+		return
+	}
+
+	// check if user exists
+	var user models.User
+	if uc.db.First(&user, uid).RecordNotFound() {
+		c.JSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("user with id %d not found.", uid)})
+		c.Abort()
+		return
+	}
+
+	// delete user
+	if err := uc.db.Delete(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.Abort()
+		return
+	}
+
+	// success
+	c.Status(http.StatusNoContent)
+}

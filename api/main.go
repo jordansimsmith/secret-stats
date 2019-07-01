@@ -48,6 +48,7 @@ func main() {
 	r.GET("/users", user.All)
 	r.GET("/users/:user_id", user.One)
 	r.PUT("/users/:user_id", user.Update)
+	r.DELETE("/users/:user_id", user.Delete)
 
 	r.Run(":3000")
 }
