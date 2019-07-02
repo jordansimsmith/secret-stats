@@ -50,6 +50,7 @@ func main() {
 	r.GET("/games", game.All)
 	r.GET("/games/:game_id", game.One)
 	r.PUT("/games/:game_id", game.Update)
+	r.DELETE("/games/:game_id", game.Delete)
 
 	r.Run(":3000")
 }

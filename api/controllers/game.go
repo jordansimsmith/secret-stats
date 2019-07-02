@@ -142,7 +142,10 @@ func (gc *GameController) All(c *gin.Context) {
 
 		// assemble output
 		for _, p := range players {
-			games = append(games, p.Game)
+			// dont return empty games
+			if p.Game.ID != 0 {
+				games = append(games, p.Game)
+			}
 		}
 	}
 
@@ -261,6 +264,38 @@ func (gc *GameController) Update(c *gin.Context) {
 
 	// update player associations
 	if err := gc.db.Model(&game).Association("Players").Replace(game.Players).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.Abort()
+		return
+	}
+
+	// success
+	c.Status(http.StatusNoContent)
+}
+
+/*
+Method Delete is responsible for handling the DELETE /games/:game_id endpoint.It deletes the game (and its players) from the database.
+*/
+func (gc *GameController) Delete(c *gin.Context) {
+
+	// extract game_id parameter from path
+	gid, err := strconv.ParseUint(c.Param("game_id"), 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid game_id in path"})
+		c.Abort()
+		return
+	}
+
+	// check if game exists
+	var game models.Game
+	if gc.db.First(&game, gid).RecordNotFound() {
+		c.JSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("game with id %d not found", gid)})
+		c.Abort()
+		return
+	}
+
+	// delete game from database
+	if err := gc.db.Delete(&game).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		c.Abort()
 		return
