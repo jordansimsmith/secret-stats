@@ -15,10 +15,13 @@
 
 ### Client/Frontend
 - React
+- NGINX
 
 ### DevOps
 - Docker
 - Docker Compose
+- Digital Ocean Droplet Hosting
+- Lets Encrypt Certificate Authority
 
 ### Authentication
 - [Auth0](https://auth0.com)
