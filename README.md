@@ -1,6 +1,6 @@
 # Are You Hitler?
 
-*Are You Hitler?* Is a web application to track records of [Secret Hitler](https://www.secrethitler.com) boardgames, and calculating statistics for each user.
+*Are You Hitler?* Is a web application to track records of [Secret Hitler](https://www.secrethitler.com) boardgames, calculating statistics for each user.
 
 ## Software Stack
 
@@ -21,7 +21,7 @@
 - Docker
 - Docker Compose
 - Digital Ocean Droplet Hosting
-- Lets Encrypt Certificate Authority
+- [Lets Encrypt Certificate Authority](https://letsencrypt.org/)
 
 ### Authentication
 - [Auth0](https://auth0.com)
