@@ -1,13 +1,13 @@
 # Are You Hitler?
 
-*Are You Hitler?* Is a web application to track records of [Secret Hitler](www.secrethitler.com) boardgames games, and calculating statistics for each user.
+*Are You Hitler?* Is a web application to track records of [Secret Hitler](https://www.secrethitler.com) boardgames games, and calculating statistics for each user.
 
 ## Software Stack
 
 ### Server/API
 - Golang
-- [Gin API framework](github.com/gin-gonic/gin)
-- [GORM ORM tool](github.com/jinzhu/gorm)
+- [Gin API framework](https://github.com/gin-gonic/gin)
+- [GORM ORM tool](https://github.com/jinzhu/gorm)
 
 ### Database
 - MariaDB
@@ -20,4 +20,4 @@
 - Docker Compose
 
 ### Authentication
-- [Auth0](auth0.com)
+- [Auth0](https://auth0.com)
