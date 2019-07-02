@@ -47,6 +47,7 @@ func main() {
 
 	game := controllers.NewGameController(db)
 	r.POST("/games", game.Create)
+	r.GET("/games", game.All)
 
 	r.Run(":3000")
 }

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -101,4 +102,50 @@ func (gc *GameController) Create(c *gin.Context) {
 	// success
 	c.Header("location", fmt.Sprintf("/games/%d", game.ID))
 	c.JSON(http.StatusCreated, gin.H{"game_id": game.ID})
+}
+
+/*
+Method All is responsible for handling the GET /games endpoint.
+It returns all games, optionally filtering by user_id.
+*/
+func (gc *GameController) All(c *gin.Context) {
+
+	// games to return
+	var games []models.Game
+
+	// user_id query not set
+	if c.Query("user_id") == "" {
+
+		// query db for all games
+		if err := gc.db.Preload("Players").Find(&games).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			c.Abort()
+			return
+		}
+	} else {
+
+		// user_id query is set
+		uid, err := strconv.ParseUint(c.Query("user_id"), 10, 32)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid user_id in query"})
+			c.Abort()
+			return
+		}
+
+		// find players for the user_id
+		var players []models.Player
+		if err := gc.db.First(&models.User{}, uid).Preload("Game.Players").Related(&players).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			c.Abort()
+			return
+		}
+
+		// assemble output
+		for _, p := range players {
+			games = append(games, p.Game)
+		}
+	}
+
+	// success
+	c.JSON(http.StatusOK, games)
 }
