@@ -7,7 +7,8 @@
 ### Server/API
 - Golang
 - [Gin API framework](https://github.com/gin-gonic/gin)
-- [GORM ORM tool](https://github.com/jinzhu/gorm)
+- [GORM ORM framework](https://github.com/jinzhu/gorm)
+- [Swagger (OpenAPI) specification](https://swagger.io/specification/)
 
 ### Database
 - MariaDB
