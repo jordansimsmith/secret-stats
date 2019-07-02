@@ -1,6 +1,6 @@
 # Are You Hitler?
 
-*Are You Hitler?* Is a web application to track records of [Secret Hitler](https://www.secrethitler.com) boardgames games, and calculating statistics for each user.
+*Are You Hitler?* Is a web application to track records of [Secret Hitler](https://www.secrethitler.com) boardgames, and calculating statistics for each user.
 
 ## Software Stack
 
