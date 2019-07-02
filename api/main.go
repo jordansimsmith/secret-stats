@@ -39,16 +39,14 @@ func main() {
 
 	user := controllers.NewUserController(db)
 
-	r.GET("/hello", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "hello world!",
-		})
-	})
 	r.POST("/users", user.Create)
 	r.GET("/users", user.All)
 	r.GET("/users/:user_id", user.One)
 	r.PUT("/users/:user_id", user.Update)
 	r.DELETE("/users/:user_id", user.Delete)
+
+	game := controllers.NewGameController(db)
+	r.POST("/games", game.Create)
 
 	r.Run(":3000")
 }

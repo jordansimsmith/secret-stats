@@ -25,9 +25,7 @@ and returns a reference to the newly created struct.
 */
 func NewUserController(db *gorm.DB) *UserController {
 	var uc UserController
-
 	uc.db = db
-
 	return &uc
 }
 
