@@ -87,7 +87,7 @@ func (gc *GameController) Create(c *gin.Context) {
 
 	// must be only one hitler
 	if hitlers != 1 {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "must be only 1 hitler"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "must be exactly 1 hitler"})
 		c.Abort()
 		return
 	}
@@ -180,4 +180,92 @@ func (gc *GameController) One(c *gin.Context) {
 
 	// success
 	c.JSON(http.StatusOK, game)
+}
+
+/*
+Method Update is responsible for handling the PUT /games/:game_id endpoint.
+It performs input sanitisation and updates the game by the values provided.
+*/
+func (gc *GameController) Update(c *gin.Context) {
+
+	// extract game_id parameter from path
+	gid, err := strconv.ParseUint(c.Param("game_id"), 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid game_id in path"})
+		c.Abort()
+		return
+	}
+
+	// unmarshal json payload
+	var game models.Game
+	if c.BindJSON(&game) != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid game object"})
+		c.Abort()
+		return
+	}
+
+	// sanitise game fields
+	if err := game.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.Abort()
+		return
+	}
+
+	// sanitise player fields
+	errs := make(chan error)
+	hitlers := 0
+	for _, player := range game.Players {
+
+		go func(p models.Player) {
+			// check player fields
+			errs <- p.Validate()
+
+			// check the user_ids exist
+			if gc.db.First(&models.User{}, p.UserID).RecordNotFound() {
+				errs <- errors.New(fmt.Sprintf("user with id %d not found", p.UserID))
+			} else {
+				errs <- nil
+			}
+
+		}(player)
+
+		// count the number of hitlers
+		if player.Hitler {
+			hitlers++
+		}
+	}
+
+	// collect concurrent error checks
+	for i := 0; i < 2*len(game.Players); i++ {
+		if err := <-errs; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"messge": err.Error()})
+			c.Abort()
+			return
+		}
+	}
+
+	// must be only one hitler
+	if hitlers != 1 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "must be exactly 1 hitler"})
+		c.Abort()
+		return
+	}
+
+	// update game in db
+	game.ID = uint(gid)
+	if err := gc.db.Save(&game).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.Abort()
+		return
+	}
+
+	// update player associations
+	if err := gc.db.Model(&game).Association("Players").Replace(game.Players).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.Abort()
+		return
+	}
+
+	// success
+	c.Status(http.StatusNoContent)
 }

@@ -49,6 +49,7 @@ func main() {
 	r.POST("/games", game.Create)
 	r.GET("/games", game.All)
 	r.GET("/games/:game_id", game.One)
+	r.PUT("/games/:game_id", game.Update)
 
 	r.Run(":3000")
 }
