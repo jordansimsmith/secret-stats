@@ -110,7 +110,7 @@ func (uc *UserController) One(c *gin.Context) {
 
 		// if record not found
 		if gorm.IsRecordNotFoundError(err) {
-			c.JSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("user with id %d not found.", uid)})
+			c.JSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("user with id %d not found", uid)})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		}

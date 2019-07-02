@@ -149,3 +149,35 @@ func (gc *GameController) All(c *gin.Context) {
 	// success
 	c.JSON(http.StatusOK, games)
 }
+
+/*
+Method One is responsible for handling the GET /games/:game_id endpoint.
+It returns the user indentified by the id provided.
+*/
+func (gc *GameController) One(c *gin.Context) {
+
+	// extract game_id parameter from path
+	gid, err := strconv.ParseUint(c.Param("game_id"), 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid game_id in path"})
+		c.Abort()
+		return
+	}
+
+	// query db for game
+	var game models.Game
+	if err := gc.db.Preload("Players").First(&game, gid).Error; err != nil {
+
+		// if record not found
+		if gorm.IsRecordNotFoundError(err) {
+			c.JSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("game with id %d not found", gid)})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		}
+		c.Abort()
+		return
+	}
+
+	// success
+	c.JSON(http.StatusOK, game)
+}
