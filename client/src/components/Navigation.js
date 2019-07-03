@@ -10,6 +10,9 @@ export class Navigation extends React.Component {
           <Menu.Item as={Link} to="/" header>
             Are You Hitler?
           </Menu.Item>
+          <Menu.Item as={Link} to="/about">
+            About
+          </Menu.Item>
           <Menu.Item as={Link} to="/games">
             Games
           </Menu.Item>
