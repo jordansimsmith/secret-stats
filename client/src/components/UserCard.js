@@ -3,6 +3,7 @@ import {Card, Button, Confirm} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import {UpdateUserForm} from './UpdateUserForm';
 
 const API = 'http://localhost:3000';
 
@@ -23,7 +24,7 @@ export class UserCard extends React.Component {
   }
 
   render() {
-    const {user} = this.props;
+    const {user, onAction} = this.props;
     const {confirmOpen} = this.state;
 
     return (
@@ -37,7 +38,7 @@ export class UserCard extends React.Component {
           <Link to={`games?user_id=${user.user_id}`}>
             <Button color="blue">Games</Button>
           </Link>
-          <Button color="orange">Edit</Button>
+          <UpdateUserForm user={user} onUpdate={onAction} />
           <Button color="red" onClick={this.open}>
             Delete
           </Button>
