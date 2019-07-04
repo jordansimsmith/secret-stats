@@ -6,7 +6,6 @@ import {
   Message,
   Card,
   Divider,
-  Button,
 } from 'semantic-ui-react';
 import axios from 'axios';
 import {CreateUserForm} from '../components/CreateUserForm';
@@ -56,7 +55,7 @@ export class Users extends React.Component {
 
         <Card.Group>
           {users.map(user => (
-            <UserCard key={user.user_id} user={user} />
+            <UserCard key={user.user_id} user={user} onAction={this.getUsers} />
           ))}
         </Card.Group>
       </Container>
