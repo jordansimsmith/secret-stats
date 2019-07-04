@@ -44,7 +44,7 @@ export class CreateUserForm extends React.Component {
         <Modal.Content>
           <Form
             loading={isLoading}
-            error={error}
+            error={!!error}
             success={success}
             onSubmit={this.createUser}>
             <Form.Field>
@@ -65,7 +65,7 @@ export class CreateUserForm extends React.Component {
                 onChange={this.handleInputChange}
               />
             </Form.Field>
-            <Message error header="Error" content="Could not create user" />
+            <Message error header="Error" content={error && error.message} />
             <Message success header="Success" content="User created" />
             <Button type="submit">Submit</Button>
           </Form>
@@ -92,14 +92,12 @@ export class CreateUserForm extends React.Component {
         this.setState({
           isLoading: false,
           success: true,
-          error: false,
+          error: null,
           firstName: '',
           lastName: '',
         }),
       )
       .then(onCreate)
-      .catch(() =>
-        this.setState({isLoading: false, error: true, success: false}),
-      );
+      .catch(error => this.setState({isLoading: false, error, success: false}));
   }
 }

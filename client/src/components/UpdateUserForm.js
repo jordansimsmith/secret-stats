@@ -45,7 +45,7 @@ export class UpdateUserForm extends React.Component {
         <Modal.Content>
           <Form
             loading={isLoading}
-            error={error}
+            error={!!error}
             success={success}
             onSubmit={this.updateUser}>
             <Form.Field>
@@ -66,7 +66,7 @@ export class UpdateUserForm extends React.Component {
                 onChange={this.handleInputChange}
               />
             </Form.Field>
-            <Message error header="Error" content="Could not update user" />
+            <Message error header="Error" content={error && error.message} />
             <Message success header="Success" content="User updated" />
             <Button type="submit">Submit</Button>
           </Form>
@@ -90,12 +90,8 @@ export class UpdateUserForm extends React.Component {
 
     axios
       .put(`${API}/users/${id}`, user)
-      .then(() =>
-        this.setState({isLoading: false, success: true, error: false}),
-      )
+      .then(() => this.setState({isLoading: false, success: true, error: null}))
       .then(onUpdate)
-      .catch(() =>
-        this.setState({isLoading: false, error: true, success: false}),
-      );
+      .catch(error => this.setState({isLoading: false, error, success: false}));
   }
 }
