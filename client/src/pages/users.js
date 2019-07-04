@@ -10,6 +10,7 @@ import {
 } from 'semantic-ui-react';
 import axios from 'axios';
 import {CreateUserForm} from '../components/CreateUserForm';
+import {UserCard} from '../components/UserCard';
 
 const API = 'http://localhost:3000';
 
@@ -55,22 +56,7 @@ export class Users extends React.Component {
 
         <Card.Group>
           {users.map(user => (
-            <Card key={user.user_id}>
-              <Card.Content>
-                <Card.Header>
-                  {user.first_name} {user.last_name}
-                </Card.Header>
-                <Button basic color="blue">
-                  Games
-                </Button>
-                <Button basic color="orange">
-                  Edit
-                </Button>
-                <Button basic color="red">
-                  Delete
-                </Button>
-              </Card.Content>
-            </Card>
+            <UserCard key={user.user_id} user={user} />
           ))}
         </Card.Group>
       </Container>

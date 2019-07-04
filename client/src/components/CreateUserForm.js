@@ -17,6 +17,8 @@ export class CreateUserForm extends React.Component {
       isLoading: false,
       error: false,
       success: false,
+      firstName: '',
+      lastName: '',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
