@@ -41,7 +41,7 @@ export class Games extends React.Component {
 
         <Message hidden={!error} color="red">
           <Message.Header>
-            An error was encountered when fetching user data.
+            An error was encountered when fetching game data
           </Message.Header>
           <p>{error && error.message}</p>
         </Message>

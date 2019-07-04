@@ -19,6 +19,7 @@ export class Users extends React.Component {
 
     this.state = {
       users: [],
+      error: null,
     };
 
     this.getUsers = this.getUsers.bind(this);
@@ -27,19 +28,6 @@ export class Users extends React.Component {
   render() {
     const {users, error} = this.state;
 
-    // check for error when fetching user data
-    if (error) {
-      return (
-        <Message color="red">
-          <Message.Header>
-            An error was encountered when fetching user data.
-          </Message.Header>
-          <p>{error.message}</p>
-        </Message>
-      );
-    }
-
-    // success
     return (
       <Container>
         <Header as="h1" icon textAlign="center">
@@ -52,6 +40,13 @@ export class Users extends React.Component {
         <CreateUserForm onCreate={this.getUsers} />
 
         <Divider />
+
+        <Message hidden={!error} color="red">
+          <Message.Header>
+            An error was encountered when fetching user data
+          </Message.Header>
+          <p>{error && error.message}</p>
+        </Message>
 
         <Card.Group>
           {users.map(user => (
