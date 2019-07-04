@@ -6,8 +6,10 @@ import {
   Message,
   Card,
   Divider,
+  Button,
 } from 'semantic-ui-react';
 import axios from 'axios';
+import {CreateUserForm} from '../components/CreateUserForm';
 
 const API = 'http://localhost:3000';
 
@@ -18,6 +20,8 @@ export class Users extends React.Component {
     this.state = {
       users: [],
     };
+
+    this.getUsers = this.getUsers.bind(this);
   }
 
   render() {
@@ -45,13 +49,26 @@ export class Users extends React.Component {
 
         <Divider />
 
-        <Card.Group centered>
+        <CreateUserForm onCreate={this.getUsers} />
+
+        <Divider />
+
+        <Card.Group>
           {users.map(user => (
             <Card key={user.user_id}>
               <Card.Content>
                 <Card.Header>
                   {user.first_name} {user.last_name}
                 </Card.Header>
+                <Button basic color="blue">
+                  Games
+                </Button>
+                <Button basic color="orange">
+                  Edit
+                </Button>
+                <Button basic color="red">
+                  Delete
+                </Button>
               </Card.Content>
             </Card>
           ))}
@@ -61,6 +78,10 @@ export class Users extends React.Component {
   }
 
   componentDidMount() {
+    this.getUsers();
+  }
+
+  getUsers() {
     axios
       .get(`${API}/users`)
       .then(res => this.setState({users: res.data}))
