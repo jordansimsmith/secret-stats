@@ -1,6 +1,10 @@
 import React from 'react';
-import {Button, Form, Modal, Message} from 'semantic-ui-react';
+import {Button, Form, Modal, Message, Select} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import {PlayerField} from './PlayerField';
+
+const API = 'http://localhost:3000';
 
 export class GameForm extends React.Component {
   static propTypes = {
@@ -29,6 +33,7 @@ export class GameForm extends React.Component {
       winner: winner,
       numberOfPlayers: numberOfPlayers,
       players: players,
+      users: [],
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -47,7 +52,20 @@ export class GameForm extends React.Component {
 
   render() {
     const {trigger, header} = this.props;
-    const {isLoading, error, success, timestamp, winner, players} = this.state;
+    const {
+      isLoading,
+      error,
+      success,
+      timestamp,
+      winner,
+      players,
+      users,
+    } = this.state;
+
+    const factions = [
+      {text: 'Liberal', value: 'liberal'},
+      {text: 'Fascist', value: 'fascist'},
+    ];
 
     return (
       <Modal trigger={trigger}>
@@ -58,24 +76,25 @@ export class GameForm extends React.Component {
             error={!!error}
             success={success}
             onSubmit={this.onSubmit}>
-            <Form.Field>
-              <label>Time Stamp</label>
-              <input
-                placeholder="Time Stamp"
-                name="timestamp"
-                value={timestamp || ''}
-                onChange={this.handleInputChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Winner</label>
-              <input
-                placeholder="Winner"
-                name="winner"
-                value={winner}
-                onChange={this.handleInputChange}
-              />
-            </Form.Field>
+            <Form.Input
+              label="Time Stamp"
+              placeholder="Time Stamp"
+              name="timestamp"
+              value={timestamp || ''}
+              onChange={this.handleInputChange}
+            />
+            <Form.Input
+              label="Winner"
+              control={Select}
+              options={factions}
+              placeholder="Winner"
+              name="winner"
+              value={winner}
+              onChange={this.handleInputChange}
+            />
+
+            <PlayerField users={users} />
+
             <Message error header="Error" content={error && error.message} />
             <Message success header="Success" content="Successful operation" />
             <Button type="submit">Submit</Button>
@@ -83,6 +102,17 @@ export class GameForm extends React.Component {
         </Modal.Content>
       </Modal>
     );
+  }
+
+  componentDidMount() {
+    this.getUsers();
+  }
+
+  getUsers() {
+    axios
+      .get(`${API}/users`)
+      .then(res => this.setState({users: res.data}))
+      .catch(error => this.setState({error}));
   }
 
   onSubmit() {
