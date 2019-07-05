@@ -8,7 +8,7 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import axios from 'axios';
-import {CreateUserForm} from '../components/CreateUserForm';
+import {CreateUser} from '../components/CreateUser';
 import {UserCard} from '../components/UserCard';
 
 const API = 'http://localhost:3000';
@@ -37,7 +37,7 @@ export class Users extends React.Component {
 
         <Divider />
 
-        <CreateUserForm onCreate={this.getUsers} />
+        <CreateUser onCreate={this.getUsers} />
 
         <Divider />
 

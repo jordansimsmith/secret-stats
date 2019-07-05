@@ -1,29 +1,34 @@
 import React from 'react';
 import {Button, Form, Modal, Message} from 'semantic-ui-react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 
-const API = 'http://localhost:3000';
-
-export class UpdateUserForm extends React.Component {
+export class UserForm extends React.Component {
   static propTypes = {
-    user: PropTypes.object.isRequired,
-    onUpdate: PropTypes.func.isRequired,
+    trigger: PropTypes.node.isRequired,
+    header: PropTypes.string.isRequired,
+    action: PropTypes.func.isRequired,
+    after: PropTypes.func,
+    user: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
 
+    // get user information or set defaults
+    const {user} = this.props;
+    const firstName = user ? user.first_name : '';
+    const lastName = user ? user.last_name : '';
+
     this.state = {
       isLoading: false,
-      error: false,
+      error: null,
       success: false,
-      firstName: props.user.first_name,
-      lastName: props.user.last_name,
+      firstName: firstName,
+      lastName: lastName,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.updateUser = this.updateUser.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   handleInputChange(event) {
@@ -37,17 +42,18 @@ export class UpdateUserForm extends React.Component {
   }
 
   render() {
+    const {trigger, header} = this.props;
     const {isLoading, error, success, firstName, lastName} = this.state;
 
     return (
-      <Modal trigger={<Button color="orange">Edit</Button>}>
-        <Modal.Header>Update a User</Modal.Header>
+      <Modal trigger={trigger}>
+        <Modal.Header>{header}</Modal.Header>
         <Modal.Content>
           <Form
             loading={isLoading}
             error={!!error}
             success={success}
-            onSubmit={this.updateUser}>
+            onSubmit={this.onSubmit}>
             <Form.Field>
               <label>First Name</label>
               <input
@@ -67,7 +73,7 @@ export class UpdateUserForm extends React.Component {
               />
             </Form.Field>
             <Message error header="Error" content={error && error.message} />
-            <Message success header="Success" content="User updated" />
+            <Message success header="Success" content="User created" />
             <Button type="submit">Submit</Button>
           </Form>
         </Modal.Content>
@@ -75,23 +81,17 @@ export class UpdateUserForm extends React.Component {
     );
   }
 
-  updateUser() {
-    this.setState({isLoading: true});
-
-    const id = this.props.user.user_id;
+  onSubmit() {
+    const {action, after} = this.props;
     const {firstName, lastName} = this.state;
-
-    const {onUpdate} = this.props;
-
     const user = {
       first_name: firstName,
       last_name: lastName,
     };
 
-    axios
-      .put(`${API}/users/${id}`, user)
+    action(user)
       .then(() => this.setState({isLoading: false, success: true, error: null}))
-      .then(onUpdate)
+      .then(after)
       .catch(error => this.setState({isLoading: false, error, success: false}));
   }
 }
