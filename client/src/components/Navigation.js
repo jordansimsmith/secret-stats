@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 export class Navigation extends React.Component {
   render() {
     return (
-      <Menu inverted>
+      <Menu stackable inverted>
         <Container>
           <Menu.Item as={Link} to="/" header>
             Are You Hitler?
