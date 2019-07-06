@@ -85,7 +85,7 @@ func (g Game) Validate() error {
 	if g.Timestamp == 0 {
 		return errors.New("timestamp not provided")
 	}
-	if g.Winner != "facist" && g.Winner != "liberal" {
+	if g.Winner != "fascist" && g.Winner != "liberal" {
 		return errors.New("winner must be one of 'fascist' or 'liberal'")
 	}
 	if g.NumPlayers != uint(len(g.Players)) {
