@@ -1,10 +1,12 @@
 import React from 'react';
-import {Form, Select} from 'semantic-ui-react';
+import {Form, Select, Button} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 export class PlayerField extends React.Component {
   static propTypes = {
     users: PropTypes.array.isRequired,
+    player: PropTypes.object,
+    onDelete: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -16,7 +18,7 @@ export class PlayerField extends React.Component {
   }
 
   render() {
-    const {users} = this.props;
+    const {users, onDelete, player} = this.props;
     const options = users.map(user => ({
       text: `${user.first_name} ${user.last_name}`,
       value: user.user_id,
@@ -27,23 +29,26 @@ export class PlayerField extends React.Component {
       {text: 'Fascist', value: 'fascist'},
     ];
 
+    const onClick = () => onDelete(player);
+
     return (
-      <Form.Group inline>
+      <Form.Group inline widths="equal">
         <Form.Input
+          fluid
           label="User"
           placeholder="User"
           control={Select}
           options={options}
-          width={6}
         />
         <Form.Input
+          fluid
           label="Role"
           placeholder="Role"
           control={Select}
           options={factions}
-          width={6}
         />
         <Form.Checkbox label="Player is Hitler" />
+        <Button onClick={onClick}>Remove</Button>
       </Form.Group>
     );
   }

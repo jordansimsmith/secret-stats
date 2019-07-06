@@ -13,12 +13,16 @@ export class CreateGame extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      users: [],
+    };
   }
 
   render() {
     const {onCreate} = this.props;
+    const {users} = this.state;
     const button = <Button color="green">New Game</Button>;
-
     const action = game => axios.post(`${API}/games`, game);
 
     return (
@@ -27,7 +31,19 @@ export class CreateGame extends React.Component {
         header="Create a New Game"
         action={action}
         after={onCreate}
+        users={users}
       />
     );
+  }
+
+  componentDidMount() {
+    this.getUsers();
+  }
+
+  getUsers() {
+    axios
+      .get(`${API}/users`)
+      .then(res => this.setState({users: res.data}))
+      .catch(error => this.setState({error}));
   }
 }

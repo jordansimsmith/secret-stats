@@ -13,6 +13,7 @@ export class GameForm extends React.Component {
     action: PropTypes.func.isRequired,
     after: PropTypes.func,
     game: PropTypes.object,
+    users: PropTypes.array.isRequired,
   };
 
   constructor(props) {
@@ -33,11 +34,12 @@ export class GameForm extends React.Component {
       winner: winner,
       numberOfPlayers: numberOfPlayers,
       players: players,
-      users: [],
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.newPlayer = this.newPlayer.bind(this);
+    this.deletePlayer = this.deletePlayer.bind(this);
   }
 
   handleInputChange(event) {
@@ -51,16 +53,8 @@ export class GameForm extends React.Component {
   }
 
   render() {
-    const {trigger, header} = this.props;
-    const {
-      isLoading,
-      error,
-      success,
-      timestamp,
-      winner,
-      players,
-      users,
-    } = this.state;
+    const {trigger, header, users} = this.props;
+    const {isLoading, error, success, timestamp, winner, players} = this.state;
 
     const factions = [
       {text: 'Liberal', value: 'liberal'},
@@ -71,11 +65,7 @@ export class GameForm extends React.Component {
       <Modal trigger={trigger}>
         <Modal.Header>{header}</Modal.Header>
         <Modal.Content>
-          <Form
-            loading={isLoading}
-            error={!!error}
-            success={success}
-            onSubmit={this.onSubmit}>
+          <Form loading={isLoading} error={!!error} success={success}>
             <Form.Input
               label="Time Stamp"
               placeholder="Time Stamp"
@@ -93,32 +83,50 @@ export class GameForm extends React.Component {
               onChange={this.handleInputChange}
             />
 
-            <PlayerField users={users} />
+            <Button onClick={this.newPlayer}>New Player</Button>
+
+            {players.map((player, i) => (
+              <PlayerField
+                key={i}
+                users={users}
+                player={player}
+                onDelete={this.deletePlayer}
+              />
+            ))}
 
             <Message error header="Error" content={error && error.message} />
             <Message success header="Success" content="Successful operation" />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" onClick={this.onSubmit}>
+              Submit
+            </Button>
           </Form>
         </Modal.Content>
       </Modal>
     );
   }
 
-  componentDidMount() {
-    this.getUsers();
+  deletePlayer(player) {
+    this.setState(prevState => ({
+      players: prevState.players.filter(item => item !== player),
+    }));
   }
 
-  getUsers() {
-    axios
-      .get(`${API}/users`)
-      .then(res => this.setState({users: res.data}))
-      .catch(error => this.setState({error}));
+  newPlayer() {
+    const player = {
+      user_id: 0,
+      faction: '',
+      hitler: false,
+    };
+
+    this.setState(prevState => ({players: [...prevState.players, player]}));
   }
 
   onSubmit() {
     const {action, after} = this.props;
 
-    action()
+    const game = {};
+
+    action(game)
       .then(() =>
         this.setState({
           isLoading: false,
