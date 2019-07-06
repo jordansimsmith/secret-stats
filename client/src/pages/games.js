@@ -1,7 +1,15 @@
 import React from 'react';
-import {Container, Header, Icon, Message, Divider} from 'semantic-ui-react';
+import {
+  Container,
+  Header,
+  Icon,
+  Message,
+  Divider,
+  Card,
+} from 'semantic-ui-react';
 import axios from 'axios';
 import {CreateGame} from '../components/CreateGame';
+import {GameCard} from '../components/GameCard';
 
 const API = 'http://localhost:3000';
 
@@ -40,13 +48,11 @@ export class Games extends React.Component {
           <p>{error && error.message}</p>
         </Message>
 
-        <ul>
+        <Card.Group>
           {games.map(game => (
-            <li key={game.game_id}>
-              {game.timestamp} {game.winner} {game.number_of_players}
-            </li>
+            <GameCard key={game.game_id} game={game} onAction={this.getGames} />
           ))}
-        </ul>
+        </Card.Group>
       </Container>
     );
   }
