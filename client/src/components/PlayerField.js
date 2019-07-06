@@ -1,24 +1,18 @@
 import React from 'react';
-import {Form, Select, Button} from 'semantic-ui-react';
+import {Form, Select} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 export class PlayerField extends React.Component {
   static propTypes = {
+    index: PropTypes.number.isRequired,
     users: PropTypes.array.isRequired,
-    player: PropTypes.object,
-    onDelete: PropTypes.func.isRequired,
+    player: PropTypes.object.isRequired,
+    removePlayer: PropTypes.func.isRequired,
+    updatePlayer: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      users: [],
-    };
-  }
-
   render() {
-    const {users, onDelete, player} = this.props;
+    const {users, player, index, removePlayer, updatePlayer} = this.props;
     const options = users.map(user => ({
       text: `${user.first_name} ${user.last_name}`,
       value: user.user_id,
@@ -29,16 +23,22 @@ export class PlayerField extends React.Component {
       {text: 'Fascist', value: 'fascist'},
     ];
 
-    const onClick = () => onDelete(player);
+    const hitlerOptions = [
+      {text: 'Not Hitler', value: false},
+      {text: 'Hitler', value: true},
+    ];
 
     return (
-      <Form.Group inline widths="equal">
+      <Form.Group widths="equal">
         <Form.Input
           fluid
           label="User"
           placeholder="User"
           control={Select}
           options={options}
+          name="user_id"
+          value={player.user_id || ''}
+          onChange={updatePlayer(index)}
         />
         <Form.Input
           fluid
@@ -46,9 +46,21 @@ export class PlayerField extends React.Component {
           placeholder="Role"
           control={Select}
           options={factions}
+          name="faction"
+          value={player.faction}
+          onChange={updatePlayer(index)}
         />
-        <Form.Checkbox label="Player is Hitler" />
-        <Button onClick={onClick}>Remove</Button>
+        <Form.Input
+          fluid
+          label="Hitler"
+          placeholder="Hitler"
+          control={Select}
+          options={hitlerOptions}
+          name="hitler"
+          value={player.hitler}
+          onChange={updatePlayer(index)}
+        />
+        <Form.Button onClick={removePlayer(index)}>Remove</Form.Button>
       </Form.Group>
     );
   }

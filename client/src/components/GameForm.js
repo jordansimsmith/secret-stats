@@ -1,10 +1,7 @@
 import React from 'react';
-import {Button, Form, Modal, Message, Select} from 'semantic-ui-react';
+import {Button, Form, Modal, Message, Select, Divider} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import {PlayerField} from './PlayerField';
-
-const API = 'http://localhost:3000';
 
 export class GameForm extends React.Component {
   static propTypes = {
@@ -23,38 +20,30 @@ export class GameForm extends React.Component {
     const {game} = this.props;
     const timestamp = game ? game.timestamp : new Date().getTime();
     const winner = game ? game.winner : '';
-    const numberOfPlayers = game ? game.number_of_players : 0;
     const players = game ? game.players : [];
 
     this.state = {
       isLoading: false,
       error: null,
       success: false,
-      timestamp: timestamp,
-      winner: winner,
-      numberOfPlayers: numberOfPlayers,
-      players: players,
+      timestamp,
+      winner,
+      players,
     };
 
-    this.handleInputChange = this.handleInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.newPlayer = this.newPlayer.bind(this);
-    this.deletePlayer = this.deletePlayer.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
+  handleInputChange(e, data) {
     this.setState({
-      [name]: value,
+      [data.name]: data.value,
     });
   }
 
   render() {
     const {trigger, header, users} = this.props;
-    const {isLoading, error, success, timestamp, winner, players} = this.state;
+    const {isLoading, error, success, timestamp, players} = this.state;
 
     const factions = [
       {text: 'Liberal', value: 'liberal'},
@@ -79,21 +68,20 @@ export class GameForm extends React.Component {
               options={factions}
               placeholder="Winner"
               name="winner"
-              value={winner}
               onChange={this.handleInputChange}
             />
-
-            <Button onClick={this.newPlayer}>New Player</Button>
-
+            <Button onClick={this.handleAddPlayer}>New Player</Button>
+            <Divider />
             {players.map((player, i) => (
               <PlayerField
                 key={i}
+                index={i}
                 users={users}
                 player={player}
-                onDelete={this.deletePlayer}
+                removePlayer={this.handleRemovePlayer}
+                updatePlayer={this.handleUpdatePlayer}
               />
             ))}
-
             <Message error header="Error" content={error && error.message} />
             <Message success header="Success" content="Successful operation" />
             <Button type="submit" onClick={this.onSubmit}>
@@ -105,26 +93,36 @@ export class GameForm extends React.Component {
     );
   }
 
-  deletePlayer(player) {
-    this.setState(prevState => ({
-      players: prevState.players.filter(item => item !== player),
-    }));
-  }
+  handleRemovePlayer = index => () => {
+    this.setState({players: this.state.players.filter((p, i) => i !== index)});
+  };
 
-  newPlayer() {
-    const player = {
-      user_id: 0,
-      faction: '',
-      hitler: false,
-    };
+  handleAddPlayer = () => {
+    this.setState({
+      players: [
+        ...this.state.players,
+        {user_id: 0, faction: '', hitler: false},
+      ],
+    });
+  };
 
-    this.setState(prevState => ({players: [...prevState.players, player]}));
-  }
+  handleUpdatePlayer = index => (e, data) => {
+    const players = this.state.players.map((player, i) =>
+      i !== index ? player : {...player, [data.name]: data.value},
+    );
+    this.setState({players});
+  };
 
   onSubmit() {
     const {action, after} = this.props;
+    const {timestamp, winner, players} = this.state;
 
-    const game = {};
+    const game = {
+      timestamp,
+      winner,
+      number_of_players: players.length,
+      players,
+    };
 
     action(game)
       .then(() =>
