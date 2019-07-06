@@ -28,9 +28,7 @@ export class GameCard extends React.Component {
     return (
       <Card>
         <Card.Content>
-          <Card.Header>
-            {new Date(game.timestamp * 1000).toLocaleString()}
-          </Card.Header>
+          <Card.Header>{new Date(game.timestamp).toLocaleString()}</Card.Header>
           <Card.Meta>{game.number_of_players} player game</Card.Meta>
           <Card.Description>
             {game.winner.toUpperCase()} victory!

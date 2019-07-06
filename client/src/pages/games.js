@@ -64,7 +64,7 @@ export class Games extends React.Component {
   getGames() {
     axios
       .get(`${API}/games`)
-      .then(res => this.setState({games: res.data}))
+      .then(res => this.setState({games: res.data.reverse()}))
       .catch(error => this.setState({error}));
   }
 }
