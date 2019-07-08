@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, Button, Confirm} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import {UpdateGame} from '../components/UpdateGame';
 
 const API = 'http://localhost:3000';
 
@@ -22,7 +23,7 @@ export class GameCard extends React.Component {
   }
 
   render() {
-    const {game} = this.props;
+    const {game, onAction} = this.props;
     const {confirmOpen} = this.state;
 
     return (
@@ -36,7 +37,7 @@ export class GameCard extends React.Component {
         </Card.Content>
         <Card.Content extra>
           <Button color="blue">Details</Button>
-          <Button color="orange">Edit</Button>
+          <UpdateGame onUpdate={onAction} game={game} />
           <Button color="red" onClick={this.open}>
             Delete
           </Button>

@@ -12,10 +12,6 @@ export class UpdateUser extends React.Component {
     user: PropTypes.object.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {onUpdate} = this.props;
     const button = <Button color="orange">Edit</Button>;

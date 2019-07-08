@@ -43,7 +43,7 @@ export class GameForm extends React.Component {
 
   render() {
     const {trigger, header, users} = this.props;
-    const {isLoading, error, success, timestamp, players} = this.state;
+    const {isLoading, error, success, timestamp, winner, players} = this.state;
 
     const factions = [
       {text: 'Liberal', value: 'liberal'},
@@ -68,6 +68,7 @@ export class GameForm extends React.Component {
               options={factions}
               placeholder="Winner"
               name="winner"
+              value={winner}
               onChange={this.handleInputChange}
             />
             <Button onClick={this.handleAddPlayer}>New Player</Button>

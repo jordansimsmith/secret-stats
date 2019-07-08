@@ -11,10 +11,6 @@ export class CreateUser extends React.Component {
     onCreate: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {onCreate} = this.props;
     const button = <Button color="green">New User</Button>;
