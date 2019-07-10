@@ -52,15 +52,11 @@ func (gc *GameController) Create(c *gin.Context) {
 		return
 	}
 
-	// sanitise player fields
+	// check player foreign key constraints
 	errs := make(chan error)
-	hitlers := 0
 	for _, player := range game.Players {
 
 		go func(p models.Player) {
-			// check player fields
-			errs <- p.Validate()
-
 			// check the user_ids exist
 			if gc.db.First(&models.User{}, p.UserID).RecordNotFound() {
 				errs <- errors.New(fmt.Sprintf("user with id %d not found", p.UserID))
@@ -69,27 +65,15 @@ func (gc *GameController) Create(c *gin.Context) {
 			}
 
 		}(player)
-
-		// count the number of hitlers
-		if player.Hitler {
-			hitlers++
-		}
 	}
 
 	// collect concurrent error checks
-	for i := 0; i < 2*len(game.Players); i++ {
+	for i := 0; i < len(game.Players); i++ {
 		if err := <-errs; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"messge": err.Error()})
 			c.Abort()
 			return
 		}
-	}
-
-	// must be only one hitler
-	if hitlers != 1 {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "must be exactly 1 hitler"})
-		c.Abort()
-		return
 	}
 
 	// create game
@@ -217,13 +201,9 @@ func (gc *GameController) Update(c *gin.Context) {
 
 	// sanitise player fields
 	errs := make(chan error)
-	hitlers := 0
 	for _, player := range game.Players {
 
 		go func(p models.Player) {
-			// check player fields
-			errs <- p.Validate()
-
 			// check the user_ids exist
 			if gc.db.First(&models.User{}, p.UserID).RecordNotFound() {
 				errs <- errors.New(fmt.Sprintf("user with id %d not found", p.UserID))
@@ -232,27 +212,15 @@ func (gc *GameController) Update(c *gin.Context) {
 			}
 
 		}(player)
-
-		// count the number of hitlers
-		if player.Hitler {
-			hitlers++
-		}
 	}
 
 	// collect concurrent error checks
-	for i := 0; i < 2*len(game.Players); i++ {
+	for i := 0; i < len(game.Players); i++ {
 		if err := <-errs; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"messge": err.Error()})
 			c.Abort()
 			return
 		}
-	}
-
-	// must be only one hitler
-	if hitlers != 1 {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "must be exactly 1 hitler"})
-		c.Abort()
-		return
 	}
 
 	// update game in db

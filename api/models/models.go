@@ -79,6 +79,7 @@ and returns an error if invalid. It only checks the fields supplied
 by the client.
 */
 func (g Game) Validate() error {
+	// validate game fields
 	if g.ID != 0 {
 		return errors.New("ID is generated, not supplied")
 	}
@@ -91,5 +92,34 @@ func (g Game) Validate() error {
 	if g.NumPlayers != uint(len(g.Players)) {
 		return errors.New("inconsistent number of players")
 	}
+
+	// validate constraints in player fields
+	hitlers := 0
+	users := make(map[int]bool)
+	for _, p := range g.Players {
+		// check player integrity
+		if err := p.Validate(); err != nil {
+			return err
+		}
+
+		// check for duplicate users
+		if _, ok := users[int(p.ID)]; ok {
+			return errors.New("duplicate players")
+		} else {
+			users[int(p.ID)] = true
+		}
+
+		// count hitlers
+		if p.Hitler {
+			hitlers++
+		}
+	}
+
+	// must be only one hitler
+	if hitlers != 1 {
+		return errors.New("must be exactly one hitler")
+	}
+
+	// valid game
 	return nil
 }
