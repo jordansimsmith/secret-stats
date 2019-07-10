@@ -141,6 +141,7 @@ func (gc *GameController) All(c *gin.Context) {
 		}
 
 		// assemble output
+		games = make([]models.Game, 0)
 		for _, p := range players {
 			// dont return empty games
 			if p.Game.ID != 0 {
