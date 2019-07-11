@@ -54,7 +54,7 @@ export class Games extends React.Component {
     return (
       <Container>
         <Header as="h1" icon textAlign="center">
-          <Icon name="user secret" />
+          <Icon name="game" />
           <Header.Content>
             {user ? `${user.first_name} ${user.last_name}'s Games` : 'Games'}
           </Header.Content>

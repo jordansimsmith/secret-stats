@@ -1,12 +1,16 @@
 import React from 'react';
+import {Segment, List, Container, Icon, Divider} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
-import {Segment, List, Container} from 'semantic-ui-react';
 
 export class Footer extends React.Component {
   render() {
     return (
       <Segment inverted vertical>
         <Container textAlign="center">
+          <Icon name="user secret" inverted size="big" />
+
+          <Divider />
+
           <List horizontal inverted divided link size="small">
             <List.Item as={Link} to="/">
               Home

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Menu, Container} from 'semantic-ui-react';
+import {Menu, Container, Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
 export class Navigation extends React.Component {
@@ -8,6 +8,7 @@ export class Navigation extends React.Component {
       <Menu stackable inverted>
         <Container>
           <Menu.Item as={Link} to="/" header>
+            <Icon name="user secret" inverted size="big" />
             Are You Hitler?
           </Menu.Item>
           <Menu.Item as={Link} to="/about">
