@@ -29,31 +29,37 @@ export class Users extends React.Component {
     const {users, error} = this.state;
 
     return (
-      <Container>
-        <Header as="h1" icon textAlign="center">
-          <Icon name="user" />
-          <Header.Content>Users</Header.Content>
-        </Header>
+      <div className="content-wrap">
+        <Container>
+          <Header as="h1" icon textAlign="center">
+            <Icon name="user" />
+            <Header.Content>Users</Header.Content>
+          </Header>
 
-        <Divider />
+          <Divider />
 
-        <CreateUser onCreate={this.getUsers} />
+          <CreateUser onCreate={this.getUsers} />
 
-        <Divider />
+          <Divider />
 
-        <Message hidden={!error} color="red">
-          <Message.Header>
-            An error was encountered when fetching user data
-          </Message.Header>
-          <p>{error && error.message}</p>
-        </Message>
+          <Message hidden={!error} color="red">
+            <Message.Header>
+              An error was encountered when fetching user data
+            </Message.Header>
+            <p>{error && error.message}</p>
+          </Message>
 
-        <Card.Group stackable itemsPerRow={2}>
-          {users.map(user => (
-            <UserCard key={user.user_id} user={user} onAction={this.getUsers} />
-          ))}
-        </Card.Group>
-      </Container>
+          <Card.Group stackable itemsPerRow={2}>
+            {users.map(user => (
+              <UserCard
+                key={user.user_id}
+                user={user}
+                onAction={this.getUsers}
+              />
+            ))}
+          </Card.Group>
+        </Container>
+      </div>
     );
   }
 

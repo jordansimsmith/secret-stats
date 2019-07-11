@@ -43,38 +43,40 @@ export class Stats extends React.Component {
     }));
 
     return (
-      <Container>
-        <Header as="h1" icon textAlign="center">
-          <Icon name="line graph" />
-          <Header.Content>
-            {user
-              ? `${user.first_name} ${user.last_name}'s Statistics`
-              : 'Statistics'}
-          </Header.Content>
-        </Header>
+      <div className="content-wrap">
+        <Container>
+          <Header as="h1" icon textAlign="center">
+            <Icon name="line graph" />
+            <Header.Content>
+              {user
+                ? `${user.first_name} ${user.last_name}'s Statistics`
+                : 'Statistics'}
+            </Header.Content>
+          </Header>
 
-        <Form>
-          <Form.Input
-            placeholder="Choose a user to display statistics for"
-            control={Select}
-            options={userOptions}
-            name="userID"
-            value={userID || ''}
-            onChange={this.onChange}
-          />
-        </Form>
+          <Form>
+            <Form.Input
+              placeholder="Choose a user to display statistics for"
+              control={Select}
+              options={userOptions}
+              name="userID"
+              value={userID || ''}
+              onChange={this.onChange}
+            />
+          </Form>
 
-        <Divider />
+          <Divider />
 
-        <Message hidden={!error} color="red">
-          <Message.Header>
-            An error was encountered when fetching user statistics data
-          </Message.Header>
-          <p>{error && error.message}</p>
-        </Message>
+          <Message hidden={!error} color="red">
+            <Message.Header>
+              An error was encountered when fetching user statistics data
+            </Message.Header>
+            <p>{error && error.message}</p>
+          </Message>
 
-        {stats ? <StatsTable stats={stats} /> : null}
-      </Container>
+          {stats ? <StatsTable stats={stats} /> : null}
+        </Container>
+      </div>
     );
   }
 

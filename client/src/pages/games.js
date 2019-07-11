@@ -52,62 +52,64 @@ export class Games extends React.Component {
     }));
 
     return (
-      <Container>
-        <Header as="h1" icon textAlign="center">
-          <Icon name="game" />
-          <Header.Content>
-            {user ? `${user.first_name} ${user.last_name}'s Games` : 'Games'}
-          </Header.Content>
-          {user && (
-            <Button as={Link} to="/games" onClick={this.allGames}>
-              Show All Games
-            </Button>
-          )}
-        </Header>
+      <div className="content-wrap">
+        <Container>
+          <Header as="h1" icon textAlign="center">
+            <Icon name="game" />
+            <Header.Content>
+              {user ? `${user.first_name} ${user.last_name}'s Games` : 'Games'}
+            </Header.Content>
+            {user && (
+              <Button as={Link} to="/games" onClick={this.allGames}>
+                Show All Games
+              </Button>
+            )}
+          </Header>
 
-        <Form>
-          <Form.Input
-            placeholder="Choose a user to display games for"
-            control={Select}
-            options={userOptions}
-            name="userID"
-            value={userID || ''}
-            onChange={this.onChange}
-          />
-        </Form>
-
-        <Divider />
-
-        <CreateGame onCreate={this.getGames} />
-
-        <Divider />
-
-        {focusedGame && (
-          <GameDetails
-            game={focusedGame}
-            users={users}
-            close={this.closeDetail}
-          />
-        )}
-
-        <Message hidden={!error} color="red">
-          <Message.Header>
-            An error was encountered when fetching game data
-          </Message.Header>
-          <p>{error && error.message}</p>
-        </Message>
-
-        <Card.Group stackable itemsPerRow={3}>
-          {games.map(game => (
-            <GameCard
-              key={game.game_id}
-              game={game}
-              onAction={this.onAction(userID)}
-              openDetail={this.openDetail(game)}
+          <Form>
+            <Form.Input
+              placeholder="Choose a user to display games for"
+              control={Select}
+              options={userOptions}
+              name="userID"
+              value={userID || ''}
+              onChange={this.onChange}
             />
-          ))}
-        </Card.Group>
-      </Container>
+          </Form>
+
+          <Divider />
+
+          <CreateGame onCreate={this.getGames} />
+
+          <Divider />
+
+          {focusedGame && (
+            <GameDetails
+              game={focusedGame}
+              users={users}
+              close={this.closeDetail}
+            />
+          )}
+
+          <Message hidden={!error} color="red">
+            <Message.Header>
+              An error was encountered when fetching game data
+            </Message.Header>
+            <p>{error && error.message}</p>
+          </Message>
+
+          <Card.Group stackable itemsPerRow={3}>
+            {games.map(game => (
+              <GameCard
+                key={game.game_id}
+                game={game}
+                onAction={this.onAction(userID)}
+                openDetail={this.openDetail(game)}
+              />
+            ))}
+          </Card.Group>
+        </Container>
+      </div>
     );
   }
   openDetail = game => () => this.setState({focusedGame: game});
