@@ -35,8 +35,11 @@ export class UserCard extends React.Component {
           </Card.Header>
         </Card.Content>
         <Card.Content extra>
-          <Link to={`games?user_id=${user.user_id}`}>
+          <Link to={`/games?user_id=${user.user_id}`}>
             <Button color="blue">Games</Button>
+          </Link>
+          <Link to={`/stats?user_id=${user.user_id}`}>
+            <Button color="yellow">Statistics</Button>
           </Link>
           <UpdateUser user={user} onUpdate={onAction} />
           <Button color="red" onClick={this.open}>

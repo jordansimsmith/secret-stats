@@ -19,6 +19,9 @@ export class Navigation extends React.Component {
           <Menu.Item as={Link} to="/users">
             Users
           </Menu.Item>
+          <Menu.Item as={Link} to="/stats">
+            Statistics
+          </Menu.Item>
         </Container>
       </Menu>
     );

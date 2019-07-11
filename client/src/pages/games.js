@@ -45,7 +45,7 @@ export class Games extends React.Component {
         <Header as="h1" icon textAlign="center">
           <Icon name="user secret" />
           <Header.Content>
-            {user ? `${user.first_name} ${user.last_name}'s games` : 'Games'}
+            {user ? `${user.first_name} ${user.last_name}'s Games` : 'Games'}
           </Header.Content>
           {user && (
             <Button as={Link} to="/games" onClick={allGames}>

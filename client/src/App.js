@@ -6,6 +6,7 @@ import {Home} from './pages/home';
 import {About} from './pages/about';
 import {Games} from './pages/games';
 import {Users} from './pages/users';
+import {Stats} from './pages/stats';
 
 export class App extends React.Component {
   render() {
@@ -18,6 +19,7 @@ export class App extends React.Component {
           <Route path="/about" component={About} />
           <Route path="/games" component={Games} />
           <Route path="/users" component={Users} />
+          <Route path="/stats" component={Stats} />
         </Switch>
 
         <Footer />

@@ -1,0 +1,72 @@
+import React from 'react';
+import {Container, Header, Icon, Message, Divider} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import qs from 'query-string';
+import {StatsTable} from '../components/StatsTable';
+
+const API = 'http://localhost:3000';
+
+export class Stats extends React.Component {
+  static propTypes = {
+    location: PropTypes.object.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  render() {
+    const {user, stats, error} = this.state;
+
+    return (
+      <Container>
+        <Header as="h1" icon textAlign="center">
+          <Icon name="line graph" />
+          <Header.Content>
+            {user
+              ? `${user.first_name} ${user.last_name}'s Statistics`
+              : 'Statistics'}
+          </Header.Content>
+        </Header>
+
+        <Divider />
+
+        <Message hidden={!error} color="red">
+          <Message.Header>
+            An error was encountered when fetching user statistics data
+          </Message.Header>
+          <p>{error && error.message}</p>
+        </Message>
+
+        {stats ? <StatsTable stats={stats} /> : null}
+      </Container>
+    );
+  }
+
+  componentDidMount() {
+    // extract user_id from query
+    const userID = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true,
+    }).user_id;
+
+    userID && this.getUser(userID);
+    userID && this.getStats(userID);
+  }
+
+  getUser(userID) {
+    axios
+      .get(`${API}/users/${userID}`)
+      .then(res => this.setState({user: res.data}))
+      .catch(error => this.setState({error}));
+  }
+
+  getStats(userID) {
+    axios
+      .get(`${API}/stats?user_id=${userID}`)
+      .then(res => this.setState({stats: res.data}))
+      .catch(error => this.setState({error}));
+  }
+}
