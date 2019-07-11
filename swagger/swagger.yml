@@ -15,6 +15,8 @@ tags:
     description: Operations on users
   - name: game
     description: Operations on games
+  - name: statistics
+    description: Operations on user statistics
 
 schemes:
   - https
@@ -288,6 +290,30 @@ paths:
           description: Not Found 
         500:
           description: Internal Server Error
+            
+  /stats:
+    get:
+      tags:
+        - statistics
+      summary: Calculate statistics
+      operationId: readStats
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: user_id
+          description: Return statistics specific to this user
+          required: true
+          type: number
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/UserStat'
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
 
 definitions:
   NewUser:
@@ -350,3 +376,32 @@ definitions:
         type: boolean
         desription: Was this player hitler?
         example: true
+
+  BaseStat:
+    type: object
+    properties:
+      games_played:
+        type: number
+        example: 10
+      games_won:
+        type: number
+        example: 7
+      games_lost:
+        type: number
+        example: 3
+      win_rate:
+        type: number
+        example: 0.7
+
+  UserStat:
+    type: object
+    properties:
+      all_games:
+        $ref: '#/definitions/BaseStat'
+      liberal_games:
+        $ref: '#/definitions/BaseStat'
+      fascist_non_hitler_games:
+        $ref: '#/definitions/BaseStat'
+      fascist_hitler_games:
+        $ref: '#/definitions/BaseStat'
+
