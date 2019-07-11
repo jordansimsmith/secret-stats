@@ -5,6 +5,7 @@
 }
 
 .content-wrap {
+  padding-top: 2em;
   padding-bottom: 8.4rem;
 }
 
@@ -32,7 +33,17 @@
   height: 92vh;
 }
 
+/* navigation bar */
 .ui.menu {
   border-radius: 0;
   margin: 0;
+}
+
+/* landing headings */
+#landing-background h1 {
+  font-size: 3em;
+}
+
+#landing-button {
+  margin-top: 2em;
 }

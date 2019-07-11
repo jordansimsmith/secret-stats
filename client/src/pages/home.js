@@ -10,10 +10,13 @@ export class Home extends React.Component {
           <Header as="h1" icon textAlign="center">
             <Icon name="user secret" />
             <Header.Content>Are You Hitler?</Header.Content>
-            <Button as={Link} to="/about">
-              Get Started
-            </Button>
           </Header>
+          <div className="center" id="landing-button">
+            <Button as={Link} to="/about" size="huge" color="blue">
+              Get Started
+              <Icon name="right arrow" />
+            </Button>
+          </div>
         </Container>
       </div>
     );
