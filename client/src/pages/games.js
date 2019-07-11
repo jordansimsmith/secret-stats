@@ -7,6 +7,8 @@ import {
   Divider,
   Card,
   Button,
+  Form,
+  Select,
 } from 'semantic-ui-react';
 import axios from 'axios';
 import qs from 'query-string';
@@ -20,12 +22,20 @@ const API = 'http://localhost:3000';
 export class Games extends React.Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
 
+    // extract user_id from query
+    const userID = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true,
+    }).user_id;
+
     this.state = {
+      userID: parseInt(userID, 10),
+      users: [],
       games: [],
     };
 
@@ -33,12 +43,12 @@ export class Games extends React.Component {
   }
 
   render() {
-    const {games, error, user} = this.state;
+    const {games, error, user, users, userID} = this.state;
 
-    const allGames = () => {
-      this.setState({user: undefined});
-      this.getGames();
-    };
+    const userOptions = users.map(user => ({
+      text: `${user.first_name} ${user.last_name}`,
+      value: user.user_id,
+    }));
 
     return (
       <Container>
@@ -48,11 +58,22 @@ export class Games extends React.Component {
             {user ? `${user.first_name} ${user.last_name}'s Games` : 'Games'}
           </Header.Content>
           {user && (
-            <Button as={Link} to="/games" onClick={allGames}>
+            <Button as={Link} to="/games" onClick={this.allGames}>
               Show All Games
             </Button>
           )}
         </Header>
+
+        <Form>
+          <Form.Input
+            placeholder="Choose a user to display games for"
+            control={Select}
+            options={userOptions}
+            name="userID"
+            value={userID || ''}
+            onChange={this.onChange}
+          />
+        </Form>
 
         <Divider />
 
@@ -76,12 +97,29 @@ export class Games extends React.Component {
     );
   }
 
-  componentDidMount() {
-    // extract user_id from query
-    const userID = qs.parse(this.props.location.search, {
-      ignoreQueryPrefix: true,
-    }).user_id;
+  onChange = (e, data) => {
+    const userID = data.value;
 
+    this.setState({
+      [data.name]: userID,
+    });
+
+    // change query url
+    this.props.history.push(`/games?user_id=${userID}`);
+
+    // reload games
+    this.getUser(userID);
+    this.getGames(userID);
+  };
+
+  allGames = () => {
+    this.setState({user: undefined, userID: undefined});
+    this.getGames();
+  };
+
+  componentDidMount() {
+    const {userID} = this.state;
+    this.getUsers();
     userID && this.getUser(userID);
     userID ? this.getGames(userID) : this.getGames();
   }
@@ -90,6 +128,13 @@ export class Games extends React.Component {
     axios
       .get(`${API}/users/${userID}`)
       .then(res => this.setState({user: res.data}))
+      .catch(error => this.setState({error}));
+  }
+
+  getUsers() {
+    axios
+      .get(`${API}/users`)
+      .then(res => this.setState({users: res.data}))
       .catch(error => this.setState({error}));
   }
 
