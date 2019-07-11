@@ -90,12 +90,14 @@ export class Games extends React.Component {
 
         <Card.Group>
           {games.map(game => (
-            <GameCard key={game.game_id} game={game} onAction={this.getGames} />
+            <GameCard key={game.game_id} game={game} onAction={this.onAction} />
           ))}
         </Card.Group>
       </Container>
     );
   }
+
+  onAction = userID => () => (userID ? this.getGames(userID) : this.getGames());
 
   onChange = (e, data) => {
     const userID = data.value;
