@@ -114,7 +114,10 @@ export class Games extends React.Component {
 
   closeDetail = () => this.setState({focusedGame: undefined});
 
-  onAction = userID => () => (userID ? this.getGames(userID) : this.getGames());
+  onAction = userID => () => {
+    userID ? this.getGames(userID) : this.getGames();
+    this.setState({focusedGame: undefined});
+  };
 
   onChange = (e, data) => {
     const userID = data.value;
