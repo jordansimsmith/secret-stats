@@ -98,7 +98,7 @@ export class Games extends React.Component {
             <GameCard
               key={game.game_id}
               game={game}
-              onAction={this.onAction}
+              onAction={this.onAction(userID)}
               openDetail={this.openDetail(game)}
             />
           ))}
