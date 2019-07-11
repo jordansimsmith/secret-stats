@@ -119,7 +119,7 @@ func (gc *GameController) All(c *gin.Context) {
 		// find players for the user_id
 		var players []models.Player
 		if err := gc.db.First(&models.User{}, uid).Preload("Game.Players").Related(&players).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			c.Abort()
 			return
 		}

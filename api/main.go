@@ -54,5 +54,8 @@ func main() {
 	r.PUT("/games/:game_id", game.Update)
 	r.DELETE("/games/:game_id", game.Delete)
 
+	stat := controllers.NewStatController(db)
+	r.GET("/stats", stat.All)
+
 	r.Run(":3000")
 }

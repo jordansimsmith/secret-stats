@@ -123,3 +123,37 @@ func (g Game) Validate() error {
 	// valid game
 	return nil
 }
+
+/*
+Struct Stat represents a summary of a user's performance in a given
+situation (e.g. liberal, fascist etc.).
+*/
+type Stat struct {
+	Played  uint    `json:"games_played"`
+	Won     uint    `json:"games_won"`
+	Lost    uint    `json:"games_lost"`
+	WinRate float32 `json:"win_rate"`
+}
+
+/*
+Method Win adds a record of a win to the current stat.
+*/
+func (s *Stat) Win() {
+	s.Played++
+	s.Won++
+	s.calculateWinRate()
+}
+
+/*
+Method Lose adds a record of a lose to the current stat.
+*/
+func (s *Stat) Lose() {
+	s.Played++
+	s.Lost++
+	s.calculateWinRate()
+}
+
+func (s *Stat) calculateWinRate() {
+	wr := float32(s.Won) / float32(s.Played)
+	s.WinRate = wr
+}
