@@ -20,3 +20,19 @@
   text-align: center;
   overflow: auto;
 }
+
+/* landing background */
+#landing-background {
+  background-image: url('../images/landing.jpg');
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  height: 92vh;
+}
+
+.ui.menu {
+  border-radius: 0;
+  margin: 0;
+}

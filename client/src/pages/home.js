@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 export class Home extends React.Component {
   render() {
     return (
-      <div className="content-wrap">
+      <div className="content-wrap" id="landing-background">
         <Container>
           <Header as="h1" icon textAlign="center">
             <Icon name="user secret" />
