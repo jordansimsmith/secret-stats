@@ -1,5 +1,13 @@
 import React from 'react';
-import {Container, Header, Icon, Message, Divider} from 'semantic-ui-react';
+import {
+  Container,
+  Header,
+  Icon,
+  Message,
+  Divider,
+  Form,
+  Select,
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import qs from 'query-string';
@@ -10,16 +18,29 @@ const API = 'http://localhost:3000';
 export class Stats extends React.Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
 
-    this.state = {};
+    // extract user_id from query
+    const userID = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true,
+    }).user_id;
+
+    this.state = {
+      userID: parseInt(userID, 10),
+      users: [],
+    };
   }
 
   render() {
-    const {user, stats, error} = this.state;
+    const {user, userID, users, stats, error} = this.state;
+    const userOptions = users.map(user => ({
+      text: `${user.first_name} ${user.last_name}`,
+      value: user.user_id,
+    }));
 
     return (
       <Container>
@@ -34,6 +55,17 @@ export class Stats extends React.Component {
 
         <Divider />
 
+        <Form>
+          <Form.Input
+            placeholder="Choose a user to display statistics for"
+            control={Select}
+            options={userOptions}
+            name="userID"
+            value={userID || ''}
+            onChange={this.onChange}
+          />
+        </Form>
+
         <Message hidden={!error} color="red">
           <Message.Header>
             An error was encountered when fetching user statistics data
@@ -46,12 +78,25 @@ export class Stats extends React.Component {
     );
   }
 
-  componentDidMount() {
-    // extract user_id from query
-    const userID = qs.parse(this.props.location.search, {
-      ignoreQueryPrefix: true,
-    }).user_id;
+  onChange = (e, data) => {
+    const userID = data.value;
 
+    // update the state
+    this.setState({
+      [data.name]: userID,
+    });
+
+    // change query
+    this.props.history.push(`/stats?user_id=${userID}`);
+
+    // reload statistics and user
+    this.getUser(userID);
+    this.getStats(userID);
+  };
+
+  componentDidMount() {
+    const {userID} = this.state;
+    this.getUsers();
     userID && this.getUser(userID);
     userID && this.getStats(userID);
   }
@@ -60,6 +105,13 @@ export class Stats extends React.Component {
     axios
       .get(`${API}/users/${userID}`)
       .then(res => this.setState({user: res.data}))
+      .catch(error => this.setState({error}));
+  }
+
+  getUsers() {
+    axios
+      .get(`${API}/users`)
+      .then(res => this.setState({users: res.data}))
       .catch(error => this.setState({error}));
   }
 
