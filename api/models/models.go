@@ -95,7 +95,7 @@ func (g Game) Validate() error {
 
 	// validate constraints in player fields
 	hitlers := 0
-	users := make(map[int]bool)
+	users := make(map[uint]bool)
 	for _, p := range g.Players {
 		// check player integrity
 		if err := p.Validate(); err != nil {
@@ -103,10 +103,10 @@ func (g Game) Validate() error {
 		}
 
 		// check for duplicate users
-		if _, ok := users[int(p.ID)]; ok {
+		if _, ok := users[p.UserID]; ok {
 			return errors.New("duplicate players")
 		} else {
-			users[int(p.ID)] = true
+			users[p.UserID] = true
 		}
 
 		// count hitlers
