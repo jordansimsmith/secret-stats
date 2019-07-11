@@ -6,15 +6,15 @@ export class GameDetails extends React.Component {
   static propTypes = {
     game: PropTypes.object.isRequired,
     close: PropTypes.func.isRequired,
+    users: PropTypes.array.isRequired,
   };
 
   render() {
-    const {game, close} = this.props;
+    const {game, close, users} = this.props;
 
     const liberals = [];
     const fascists = [];
     const hitlers = [];
-
     game.players.forEach(player => {
       if (player.faction === 'liberal') {
         liberals.push(player);
@@ -26,6 +26,14 @@ export class GameDetails extends React.Component {
         }
       }
     });
+
+    const userMap = users.reduce(
+      (o, user) => ({
+        ...o,
+        [user.user_id]: `${user.first_name} ${user.last_name}`,
+      }),
+      {},
+    );
 
     return (
       <Segment>
@@ -45,7 +53,7 @@ export class GameDetails extends React.Component {
           </Table.Header>
 
           <Table.Body>
-            {this.renderRows(liberals, fascists, hitlers)}
+            {this.renderRows(liberals, fascists, hitlers, userMap)}
           </Table.Body>
         </Table>
 
@@ -54,7 +62,7 @@ export class GameDetails extends React.Component {
     );
   }
 
-  renderRows(liberals, fascists, hitlers) {
+  renderRows(liberals, fascists, hitlers, users) {
     const maxLength = Math.max(
       liberals.length,
       fascists.length,
@@ -68,9 +76,9 @@ export class GameDetails extends React.Component {
       const hitler = hitlers.pop();
       const row = (
         <Table.Row key={i}>
-          <Table.Cell>{liberal && liberal.user_id}</Table.Cell>
-          <Table.Cell>{fascist && fascist.user_id}</Table.Cell>
-          <Table.Cell>{hitler && hitler.user_id}</Table.Cell>
+          <Table.Cell>{liberal && users[liberal.user_id]}</Table.Cell>
+          <Table.Cell>{fascist && users[fascist.user_id]}</Table.Cell>
+          <Table.Cell>{hitler && users[hitler.user_id]}</Table.Cell>
         </Table.Row>
       );
 

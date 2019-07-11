@@ -83,7 +83,11 @@ export class Games extends React.Component {
         <Divider />
 
         {focusedGame && (
-          <GameDetails game={focusedGame} close={this.closeDetail} />
+          <GameDetails
+            game={focusedGame}
+            users={users}
+            close={this.closeDetail}
+          />
         )}
 
         <Message hidden={!error} color="red">
