@@ -10,6 +10,7 @@ export class GameCard extends React.Component {
   static propTypes = {
     game: PropTypes.object.isRequired,
     onAction: PropTypes.func,
+    openDetail: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -23,7 +24,7 @@ export class GameCard extends React.Component {
   }
 
   render() {
-    const {game, onAction} = this.props;
+    const {game, onAction, openDetail} = this.props;
     const {confirmOpen} = this.state;
 
     return (
@@ -36,7 +37,9 @@ export class GameCard extends React.Component {
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
-          <Button color="blue">Details</Button>
+          <Button color="blue" onClick={openDetail}>
+            Details
+          </Button>
           <UpdateGame onUpdate={onAction} game={game} />
           <Button color="red" onClick={this.open}>
             Delete

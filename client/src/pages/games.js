@@ -44,7 +44,7 @@ export class Games extends React.Component {
   }
 
   render() {
-    const {games, error, user, users, userID} = this.state;
+    const {games, error, user, users, userID, focusedGame} = this.state;
 
     const userOptions = users.map(user => ({
       text: `${user.first_name} ${user.last_name}`,
@@ -82,7 +82,9 @@ export class Games extends React.Component {
 
         <Divider />
 
-        {games[0] && <GameDetails game={games[0]} />}
+        {focusedGame && (
+          <GameDetails game={focusedGame} close={this.closeDetail} />
+        )}
 
         <Message hidden={!error} color="red">
           <Message.Header>
@@ -93,12 +95,20 @@ export class Games extends React.Component {
 
         <Card.Group stackable itemsPerRow={3}>
           {games.map(game => (
-            <GameCard key={game.game_id} game={game} onAction={this.onAction} />
+            <GameCard
+              key={game.game_id}
+              game={game}
+              onAction={this.onAction}
+              openDetail={this.openDetail(game)}
+            />
           ))}
         </Card.Group>
       </Container>
     );
   }
+  openDetail = game => () => this.setState({focusedGame: game});
+
+  closeDetail = () => this.setState({focusedGame: undefined});
 
   onAction = userID => () => (userID ? this.getGames(userID) : this.getGames());
 

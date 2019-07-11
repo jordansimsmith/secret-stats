@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 export class GameDetails extends React.Component {
   static propTypes = {
     game: PropTypes.object.isRequired,
+    close: PropTypes.func.isRequired,
   };
 
   render() {
-    const {game} = this.props;
+    const {game, close} = this.props;
 
     const liberals = [];
     const fascists = [];
@@ -48,7 +49,7 @@ export class GameDetails extends React.Component {
           </Table.Body>
         </Table>
 
-        <Button>Close</Button>
+        <Button onClick={close}>Close</Button>
       </Segment>
     );
   }
