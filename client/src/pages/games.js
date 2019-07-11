@@ -79,7 +79,9 @@ export class Games extends React.Component {
 
           <Divider />
 
-          <CreateGame onCreate={this.getGames} />
+          <div className="center">
+            <CreateGame onCreate={this.getGames} />
+          </div>
 
           <Divider />
 

@@ -1,3 +1,4 @@
+/* force the footer to the bottom*/
 #root {
   position: relative;
   min-height: 100vh;
@@ -12,4 +13,10 @@
   bottom: 0;
   width: 100%;
   height: 8.4rem;
+}
+
+/* centered elements */
+.center {
+  text-align: center;
+  overflow: auto;
 }

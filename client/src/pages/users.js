@@ -38,7 +38,9 @@ export class Users extends React.Component {
 
           <Divider />
 
-          <CreateUser onCreate={this.getUsers} />
+          <div className="center">
+            <CreateUser onCreate={this.getUsers} />
+          </div>
 
           <Divider />
 
