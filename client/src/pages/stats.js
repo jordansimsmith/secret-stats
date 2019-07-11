@@ -53,8 +53,6 @@ export class Stats extends React.Component {
           </Header.Content>
         </Header>
 
-        <Divider />
-
         <Form>
           <Form.Input
             placeholder="Choose a user to display statistics for"
@@ -65,6 +63,8 @@ export class Stats extends React.Component {
             onChange={this.onChange}
           />
         </Form>
+
+        <Divider />
 
         <Message hidden={!error} color="red">
           <Message.Header>
