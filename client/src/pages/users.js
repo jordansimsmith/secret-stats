@@ -48,7 +48,7 @@ export class Users extends React.Component {
           <p>{error && error.message}</p>
         </Message>
 
-        <Card.Group>
+        <Card.Group stackable itemsPerRow={3}>
           {users.map(user => (
             <UserCard key={user.user_id} user={user} onAction={this.getUsers} />
           ))}

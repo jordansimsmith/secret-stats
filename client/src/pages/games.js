@@ -16,6 +16,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {CreateGame} from '../components/CreateGame';
 import {GameCard} from '../components/GameCard';
+import {GameDetails} from '../components/GameDetails';
 
 const API = 'http://localhost:3000';
 
@@ -81,6 +82,8 @@ export class Games extends React.Component {
 
         <Divider />
 
+        {games[0] && <GameDetails game={games[0]} />}
+
         <Message hidden={!error} color="red">
           <Message.Header>
             An error was encountered when fetching game data
@@ -88,7 +91,7 @@ export class Games extends React.Component {
           <p>{error && error.message}</p>
         </Message>
 
-        <Card.Group>
+        <Card.Group stackable itemsPerRow={3}>
           {games.map(game => (
             <GameCard key={game.game_id} game={game} onAction={this.onAction} />
           ))}
