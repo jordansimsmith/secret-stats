@@ -17,8 +17,7 @@ import {Link} from 'react-router-dom';
 import {CreateGame} from '../components/CreateGame';
 import {GameCard} from '../components/GameCard';
 import {GameDetails} from '../components/GameDetails';
-
-const API = 'http://localhost:3000';
+import {API} from '../shared/api';
 
 export class Games extends React.Component {
   static propTypes = {

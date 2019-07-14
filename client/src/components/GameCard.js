@@ -3,8 +3,7 @@ import {Card, Button, Confirm} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import {UpdateGame} from '../components/UpdateGame';
-
-const API = 'http://localhost:3000';
+import {API} from '../shared/api';
 
 export class GameCard extends React.Component {
   static propTypes = {

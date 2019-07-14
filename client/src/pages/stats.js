@@ -12,8 +12,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import qs from 'query-string';
 import {StatsTable} from '../components/StatsTable';
-
-const API = 'http://localhost:3000';
+import {API} from '../shared/api';
 
 export class Stats extends React.Component {
   static propTypes = {

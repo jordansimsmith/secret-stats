@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import {UpdateUser} from './UpdateUser';
-
-const API = 'http://localhost:3000';
+import {API} from '../shared/api';
 
 export class UserCard extends React.Component {
   static propTypes = {

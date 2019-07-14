@@ -3,8 +3,7 @@ import {Button} from 'semantic-ui-react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import {UserForm} from './UserForm';
-
-const API = 'http://localhost:3000';
+import {API} from '../shared/api';
 
 export class UpdateUser extends React.Component {
   static propTypes = {

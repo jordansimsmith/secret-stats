@@ -10,8 +10,7 @@ import {
 import axios from 'axios';
 import {CreateUser} from '../components/CreateUser';
 import {UserCard} from '../components/UserCard';
-
-const API = 'http://localhost:3000';
+import {API} from '../shared/api';
 
 export class Users extends React.Component {
   constructor(props) {
