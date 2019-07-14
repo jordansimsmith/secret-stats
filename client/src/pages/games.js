@@ -79,7 +79,7 @@ export class Games extends React.Component {
           <Divider />
 
           <div className="center">
-            <CreateGame onCreate={this.getGames} />
+            <CreateGame onCreate={this.onAction(userID)} />
           </div>
 
           <Divider />
