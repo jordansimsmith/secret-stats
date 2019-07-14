@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  client:
+    container_name: client
+    build: ./client
+    depends_on:
+      - api
+    ports:
+      - 80:80
+
+  api:
+    container_name: api
+    build: ./api
+    env_file:
+      - .env
+    environment:
+      WAIT_HOSTS: mariadb:3306
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb
+    env_file:
+      - .env
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  db:
