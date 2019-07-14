@@ -71,6 +71,9 @@ export class Stats extends React.Component {
               An error was encountered when fetching user statistics data
             </Message.Header>
             <p>{error && error.message}</p>
+            {error && error.response && (
+              <p> Message: {error.response.data.message}</p>
+            )}
           </Message>
 
           {stats ? <StatsTable stats={stats} /> : null}

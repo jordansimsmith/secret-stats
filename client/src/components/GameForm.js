@@ -83,7 +83,13 @@ export class GameForm extends React.Component {
                 updatePlayer={this.handleUpdatePlayer}
               />
             ))}
-            <Message error header="Error" content={error && error.message} />
+            <Message error>
+              <Message.Header>Error</Message.Header>
+              <p>{error && error.message}</p>
+              {error && error.response && (
+                <p> Message: {error.response.data.message}</p>
+              )}
+            </Message>
             <Message success header="Success" content="Successful operation" />
             <Button type="submit" onClick={this.onSubmit}>
               Submit

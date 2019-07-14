@@ -72,7 +72,13 @@ export class UserForm extends React.Component {
                 onChange={this.handleInputChange}
               />
             </Form.Field>
-            <Message error header="Error" content={error && error.message} />
+            <Message error>
+              <Message.Header>Error</Message.Header>
+              <p>{error && error.message}</p>
+              {error && error.response && (
+                <p> Message: {error.response.data.message}</p>
+              )}
+            </Message>
             <Message success header="Success" content="User created" />
             <Button type="submit">Submit</Button>
           </Form>

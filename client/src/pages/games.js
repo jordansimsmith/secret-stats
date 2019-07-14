@@ -97,6 +97,9 @@ export class Games extends React.Component {
               An error was encountered when fetching game data
             </Message.Header>
             <p>{error && error.message}</p>
+            {error && error.response && (
+              <p> Message: {error.response.data.message}</p>
+            )}
           </Message>
 
           <Card.Group stackable itemsPerRow={3}>
