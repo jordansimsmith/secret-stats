@@ -44,6 +44,10 @@ class Auth {
     this.idToken = null;
     this.profile = null;
     this.expiresAt = null;
+    this.auth0.logout({
+      clientID: 'VdF04cFVzLURRRvn5rjhR7RE2tGtzTlz',
+      returnTo: 'http://localhost:5000/',
+    });
   };
 }
 
