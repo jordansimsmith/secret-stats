@@ -32,18 +32,38 @@ class Auth {
         }
 
         // success, set fields
-        this.idToken = authResult.idToken;
-        this.profile = authResult.idTokenPayload;
-        this.expiresAt = authResult.idTokenPayload.exp * 1000;
+        this.setSession(authResult);
         resolve();
       });
     });
   };
 
-  signOut = () => {
+  silentAuth = () => {
+    return new Promise((resolve, reject) => {
+      this.auth0.checkSession({}, (err, authResult) => {
+        if (err) {
+          return reject(err);
+        }
+        this.setSession(authResult);
+        resolve();
+      });
+    });
+  };
+
+  setSession = authResult => {
+    this.idToken = authResult.idToken;
+    this.profile = authResult.idTokenPayload;
+    this.expiresAt = authResult.idTokenPayload.exp * 1000;
+  };
+
+  unsetSession = () => {
     this.idToken = null;
     this.profile = null;
     this.expiresAt = null;
+  };
+
+  signOut = () => {
+    this.unsetSession();
     this.auth0.logout({
       clientID: 'VdF04cFVzLURRRvn5rjhR7RE2tGtzTlz',
       returnTo: 'http://localhost:5000/',
