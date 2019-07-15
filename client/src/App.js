@@ -7,6 +7,7 @@ import {About} from './pages/about';
 import {Games} from './pages/games';
 import {Users} from './pages/users';
 import {Stats} from './pages/stats';
+import Callback from './pages/callback';
 
 export class App extends React.Component {
   render() {
@@ -16,6 +17,7 @@ export class App extends React.Component {
 
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route path="/callback" component={Callback} />
           <Route path="/about" component={About} />
           <Route path="/games" component={Games} />
           <Route path="/users" component={Users} />

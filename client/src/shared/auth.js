@@ -16,7 +16,7 @@ class Auth {
 
   getIdToken = () => this.idToken;
 
-  isAuthenticated = () => new Date.GetTime() < this.expiresAt;
+  isAuthenticated = () => new Date().getTime() < this.expiresAt;
 
   signIn = () => this.auth0.authorize();
 

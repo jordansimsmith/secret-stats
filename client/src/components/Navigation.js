@@ -1,6 +1,7 @@
 import React from 'react';
 import {Menu, Container, Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+import Login from './Login';
 
 export class Navigation extends React.Component {
   render() {
@@ -23,6 +24,11 @@ export class Navigation extends React.Component {
           <Menu.Item as={Link} to="/stats">
             Statistics
           </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item>
+              <Login />
+            </Menu.Item>
+          </Menu.Menu>
         </Container>
       </Menu>
     );
