@@ -8,6 +8,7 @@ import {Games} from './pages/games';
 import {Users} from './pages/users';
 import {Stats} from './pages/stats';
 import Callback from './pages/callback';
+import {SecureRoute} from './components/SecureRoute';
 
 export class App extends React.Component {
   render() {
@@ -19,9 +20,9 @@ export class App extends React.Component {
           <Route exact path="/" component={Home} />
           <Route path="/callback" component={Callback} />
           <Route path="/about" component={About} />
-          <Route path="/games" component={Games} />
-          <Route path="/users" component={Users} />
-          <Route path="/stats" component={Stats} />
+          <SecureRoute path="/games" component={Games} />
+          <SecureRoute path="/users" component={Users} />
+          <SecureRoute path="/stats" component={Stats} />
         </Switch>
 
         <Footer />
