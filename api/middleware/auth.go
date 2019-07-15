@@ -23,9 +23,8 @@ func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		// initialise auth0 validator
-		auth0Domain := "https://" + DOMAIN + "/"
-		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth0Domain + ".well-known/jwks.json"}, nil)
-		config := auth0.NewConfiguration(client, []string{AUDIENCE}, auth0Domain, jose.RS256)
+		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: DOMAIN + ".well-known/jwks.json"}, nil)
+		config := auth0.NewConfiguration(client, []string{AUDIENCE}, DOMAIN, jose.RS256)
 		validator := auth0.NewValidator(config, nil)
 
 		// validate request

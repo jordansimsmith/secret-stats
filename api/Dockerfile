@@ -15,6 +15,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 # serve stage
 FROM alpine
 
+RUN apk --no-cache add ca-certificates
+
 COPY --from=builder /app/api /app/
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
