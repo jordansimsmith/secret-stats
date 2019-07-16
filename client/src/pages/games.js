@@ -10,14 +10,13 @@ import {
   Form,
   Select,
 } from 'semantic-ui-react';
-import axios from 'axios';
 import qs from 'query-string';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {CreateGame} from '../components/CreateGame';
 import {GameCard} from '../components/GameCard';
 import {GameDetails} from '../components/GameDetails';
-import {API} from '../shared/api';
+import API from '../shared/apiAdapter';
 
 export class Games extends React.Component {
   static propTypes = {
@@ -153,25 +152,19 @@ export class Games extends React.Component {
   }
 
   getUser(userID) {
-    axios
-      .get(`${API}/users/${userID}`)
+    API.getUser(userID)
       .then(res => this.setState({user: res.data}))
       .catch(error => this.setState({error}));
   }
 
   getUsers() {
-    axios
-      .get(`${API}/users`)
+    API.getUsers()
       .then(res => this.setState({users: res.data}))
       .catch(error => this.setState({error}));
   }
 
   getGames(userID) {
-    // structure request url
-    const url = userID ? `${API}/games?user_id=${userID}` : `${API}/games`;
-
-    axios
-      .get(url)
+    API.getGames(userID)
       .then(res => this.setState({games: res.data.reverse()}))
       .catch(error => this.setState({error}));
   }

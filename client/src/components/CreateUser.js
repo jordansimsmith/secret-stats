@@ -1,9 +1,8 @@
 import React from 'react';
 import {Button} from 'semantic-ui-react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import {UserForm} from './UserForm';
-import {API} from '../shared/api';
+import API from '../shared/apiAdapter';
 
 export class CreateUser extends React.Component {
   static propTypes = {
@@ -14,7 +13,7 @@ export class CreateUser extends React.Component {
     const {onCreate} = this.props;
     const button = <Button color="green">New User</Button>;
 
-    const action = user => axios.post(`${API}/users`, user);
+    const action = API.createUser;
 
     return (
       <UserForm

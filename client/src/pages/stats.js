@@ -9,10 +9,9 @@ import {
   Select,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import qs from 'query-string';
 import {StatsTable} from '../components/StatsTable';
-import {API} from '../shared/api';
+import API from '../shared/apiAdapter';
 
 export class Stats extends React.Component {
   static propTypes = {
@@ -106,22 +105,19 @@ export class Stats extends React.Component {
   }
 
   getUser(userID) {
-    axios
-      .get(`${API}/users/${userID}`)
+    API.getUser(userID)
       .then(res => this.setState({user: res.data}))
       .catch(error => this.setState({error}));
   }
 
   getUsers() {
-    axios
-      .get(`${API}/users`)
+    API.getUsers()
       .then(res => this.setState({users: res.data}))
       .catch(error => this.setState({error}));
   }
 
   getStats(userID) {
-    axios
-      .get(`${API}/stats?user_id=${userID}`)
+    API.getStats(userID)
       .then(res => this.setState({stats: res.data}))
       .catch(error => this.setState({error}));
   }

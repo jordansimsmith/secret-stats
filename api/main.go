@@ -10,6 +10,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/jordansimsmith/are-you-hitler/api/controllers"
+	"github.com/jordansimsmith/are-you-hitler/api/middleware"
 	"github.com/jordansimsmith/are-you-hitler/api/models"
 )
 
@@ -37,7 +38,11 @@ func main() {
 
 	// gin initialisation
 	r := gin.Default()
-	r.Use(cors.Default())
+	c := cors.DefaultConfig()
+	c.AllowAllOrigins = true
+	c.AllowHeaders = []string{"Authorization", "content-type"}
+	r.Use(cors.New(c))
+	r.Use(middleware.AuthRequired())
 
 	user := controllers.NewUserController(db)
 

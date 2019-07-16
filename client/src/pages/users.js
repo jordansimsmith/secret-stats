@@ -7,10 +7,9 @@ import {
   Card,
   Divider,
 } from 'semantic-ui-react';
-import axios from 'axios';
 import {CreateUser} from '../components/CreateUser';
 import {UserCard} from '../components/UserCard';
-import {API} from '../shared/api';
+import API from '../shared/apiAdapter';
 
 export class Users extends React.Component {
   constructor(props) {
@@ -72,8 +71,7 @@ export class Users extends React.Component {
   }
 
   getUsers() {
-    axios
-      .get(`${API}/users`)
+    API.getUsers()
       .then(res => this.setState({users: res.data}))
       .catch(error => this.setState({error}));
   }
