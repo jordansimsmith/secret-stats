@@ -4,10 +4,10 @@ class Auth {
   constructor() {
     this.auth0 = new auth0.WebAuth({
       domain: 'are-you-hitler.auth0.com',
-      audience: 'https://are-you-hitler.auth0.com/userinfo',
+      audience: 'https://are-you-hitler-api',
       clientID: 'VdF04cFVzLURRRvn5rjhR7RE2tGtzTlz',
       redirectUri: 'http://localhost:5000/callback',
-      responseType: 'id_token',
+      responseType: 'token id_token',
       scope: 'openid profile',
     });
   }
@@ -15,6 +15,8 @@ class Auth {
   getProfile = () => this.profile;
 
   getIdToken = () => this.idToken;
+
+  getAccessToken = () => this.accessToken;
 
   isAuthenticated = () => new Date().getTime() < this.expiresAt;
 
@@ -27,7 +29,7 @@ class Auth {
           return reject(err);
         }
 
-        if (!authResult || !authResult.idToken) {
+        if (!authResult || !authResult.idToken || !authResult.accessToken) {
           return reject(err);
         }
 
@@ -51,12 +53,14 @@ class Auth {
   };
 
   setSession = authResult => {
+    this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.profile = authResult.idTokenPayload;
     this.expiresAt = authResult.idTokenPayload.exp * 1000;
   };
 
   unsetSession = () => {
+    this.accessToken = null;
     this.idToken = null;
     this.profile = null;
     this.expiresAt = null;

@@ -38,7 +38,10 @@ func main() {
 
 	// gin initialisation
 	r := gin.Default()
-	r.Use(cors.Default())
+	c := cors.DefaultConfig()
+	c.AllowAllOrigins = true
+	c.AllowHeaders = []string{"Authorization"}
+	r.Use(cors.New(c))
 	r.Use(middleware.AuthRequired())
 
 	user := controllers.NewUserController(db)

@@ -11,6 +11,7 @@ import axios from 'axios';
 import {CreateUser} from '../components/CreateUser';
 import {UserCard} from '../components/UserCard';
 import {API} from '../shared/api';
+import auth from '../shared/auth';
 
 export class Users extends React.Component {
   constructor(props) {
@@ -73,7 +74,9 @@ export class Users extends React.Component {
 
   getUsers() {
     axios
-      .get(`${API}/users`)
+      .get(`${API}/users`, {
+        headers: {Authorization: `Bearer ${auth.getAccessToken()}`},
+      })
       .then(res => this.setState({users: res.data}))
       .catch(error => this.setState({error}));
   }
