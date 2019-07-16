@@ -40,7 +40,7 @@ func main() {
 	r := gin.Default()
 	c := cors.DefaultConfig()
 	c.AllowAllOrigins = true
-	c.AllowHeaders = []string{"Authorization"}
+	c.AllowHeaders = []string{"Authorization", "content-type"}
 	r.Use(cors.New(c))
 	r.Use(middleware.AuthRequired())
 
