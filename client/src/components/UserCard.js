@@ -1,10 +1,9 @@
 import React from 'react';
 import {Card, Button, Confirm} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import {Link} from 'react-router-dom';
 import {UpdateUser} from './UpdateUser';
-import {API} from '../shared/api';
+import API from '../shared/apiAdapter';
 
 export class UserCard extends React.Component {
   static propTypes = {
@@ -61,8 +60,7 @@ export class UserCard extends React.Component {
     const id = this.props.user.user_id;
     const {onAction} = this.props;
 
-    axios
-      .delete(`${API}/users/${id}`)
+    API.deleteUser(id)
       .then(onAction)
       .then(this.close)
       .catch(() => this.setState({isLoading: false, error: true}));

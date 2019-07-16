@@ -1,9 +1,8 @@
 import React from 'react';
 import {Card, Button, Confirm} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import {UpdateGame} from '../components/UpdateGame';
-import {API} from '../shared/api';
+import API from '../shared/apiAdapter';
 
 export class GameCard extends React.Component {
   static propTypes = {
@@ -60,8 +59,7 @@ export class GameCard extends React.Component {
     const id = this.props.game.game_id;
     const {onAction} = this.props;
 
-    axios
-      .delete(`${API}/games/${id}`)
+    API.deleteGame(id)
       .then(onAction)
       .then(this.close)
       .catch(error => this.setState({error}));

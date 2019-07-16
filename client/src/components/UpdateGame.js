@@ -1,9 +1,8 @@
 import React from 'react';
 import {Button} from 'semantic-ui-react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import {GameForm} from './GameForm';
-import {API} from '../shared/api';
+import API from '../shared/apiAdapter';
 
 export class UpdateGame extends React.Component {
   static propTypes = {
@@ -25,13 +24,13 @@ export class UpdateGame extends React.Component {
     const button = <Button color="orange">Edit</Button>;
     const id = game.game_id;
 
-    const action = game => axios.put(`${API}/games/${id}`, game);
+    const action = gameID => game => API.updateGame(game, gameID);
 
     return (
       <GameForm
         trigger={button}
         header="Edit Game Information"
-        action={action}
+        action={action(id)}
         after={onUpdate}
         users={users}
         game={game}
@@ -44,8 +43,7 @@ export class UpdateGame extends React.Component {
   }
 
   getUsers() {
-    axios
-      .get(`${API}/users`)
+    API.getUsers()
       .then(res => this.setState({users: res.data}))
       .catch(error => this.setState({error}));
   }
