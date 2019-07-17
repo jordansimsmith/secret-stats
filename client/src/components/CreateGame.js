@@ -7,19 +7,11 @@ import API from '../shared/apiAdapter';
 export class CreateGame extends React.Component {
   static propTypes = {
     onCreate: PropTypes.func.isRequired,
+    users: PropTypes.array.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      users: [],
-    };
-  }
-
   render() {
-    const {onCreate} = this.props;
-    const {users} = this.state;
+    const {onCreate, users} = this.props;
     const button = <Button color="green">New Game</Button>;
     const action = API.createGame;
 
@@ -32,15 +24,5 @@ export class CreateGame extends React.Component {
         users={users}
       />
     );
-  }
-
-  componentDidMount() {
-    this.getUsers();
-  }
-
-  getUsers() {
-    API.getUsers()
-      .then(res => this.setState({users: res.data}))
-      .catch(error => this.setState({error}));
   }
 }

@@ -8,19 +8,11 @@ export class UpdateGame extends React.Component {
   static propTypes = {
     onUpdate: PropTypes.func.isRequired,
     game: PropTypes.object.isRequired,
+    users: PropTypes.array.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      users: [],
-    };
-  }
-
   render() {
-    const {onUpdate, game} = this.props;
-    const {users} = this.state;
+    const {onUpdate, game, users} = this.props;
     const button = <Button color="orange">Edit</Button>;
     const id = game.game_id;
 
@@ -36,15 +28,5 @@ export class UpdateGame extends React.Component {
         game={game}
       />
     );
-  }
-
-  componentDidMount() {
-    this.getUsers();
-  }
-
-  getUsers() {
-    API.getUsers()
-      .then(res => this.setState({users: res.data}))
-      .catch(error => this.setState({error}));
   }
 }

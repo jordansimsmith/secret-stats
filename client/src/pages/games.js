@@ -89,7 +89,7 @@ export class Games extends React.Component {
           <Divider />
 
           <div className="center">
-            <CreateGame onCreate={this.onAction(userID)} />
+            <CreateGame onCreate={this.onAction(userID)} users={users} />
           </div>
 
           <Divider />
@@ -123,6 +123,7 @@ export class Games extends React.Component {
                 game={game}
                 onAction={this.onAction(userID)}
                 openDetail={this.openDetail(game)}
+                users={users}
               />
             ))}
           </Card.Group>
