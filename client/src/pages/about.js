@@ -30,13 +30,6 @@ export class About extends React.Component {
               their agenda, and win the game.
             </p>
 
-            <p>
-              The standard edition is identical to the edition of Secret Hitler
-              that shipped to Kickstarter backers in 2016, including foil inlays
-              on the boards and wooden placards for the Chancellor and
-              President.
-            </p>
-
             <a href="https://www.secrethitler.com">
               from the Secret Hitler website.
             </a>
