@@ -9,9 +9,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/jordansimsmith/are-you-hitler/api/controllers"
-	"github.com/jordansimsmith/are-you-hitler/api/middleware"
-	"github.com/jordansimsmith/are-you-hitler/api/models"
+	"github.com/jordansimsmith/secret-stats/api/controllers"
+	"github.com/jordansimsmith/secret-stats/api/middleware"
+	"github.com/jordansimsmith/secret-stats/api/models"
 )
 
 var (
@@ -23,7 +23,7 @@ var (
 )
 
 func main() {
-	fmt.Println("Are You Hitler? API starting.")
+	fmt.Println("Secret Stats API starting.")
 
 	// gorm initialisation
 	url := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE)

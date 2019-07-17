@@ -1,4 +1,4 @@
-module github.com/jordansimsmith/are-you-hitler/api
+module github.com/jordansimsmith/secret-stats/api
 
 go 1.12
 
