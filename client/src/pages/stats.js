@@ -7,6 +7,8 @@ import {
   Divider,
   Form,
   Select,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
@@ -30,11 +32,12 @@ export class Stats extends React.Component {
     this.state = {
       userID: parseInt(userID, 10),
       users: [],
+      isLoading: false,
     };
   }
 
   render() {
-    const {user, userID, users, stats, error} = this.state;
+    const {user, userID, users, stats, error, isLoading} = this.state;
     const userOptions = users.map(user => ({
       text: `${user.first_name} ${user.last_name}`,
       value: user.user_id,
@@ -64,6 +67,10 @@ export class Stats extends React.Component {
           </Form>
 
           <Divider />
+
+          <Dimmer inverted active={isLoading}>
+            <Loader>Loading Statistics</Loader>
+          </Dimmer>
 
           <Message hidden={!error} color="red">
             <Message.Header>
@@ -98,6 +105,7 @@ export class Stats extends React.Component {
   };
 
   componentDidMount() {
+    this.setState({isLoading: true});
     const {userID} = this.state;
     this.getUsers();
     userID && this.getUser(userID);
@@ -118,7 +126,7 @@ export class Stats extends React.Component {
 
   getStats(userID) {
     API.getStats(userID)
-      .then(res => this.setState({stats: res.data}))
-      .catch(error => this.setState({error}));
+      .then(res => this.setState({stats: res.data, isLoading: false}))
+      .catch(error => this.setState({error, isLoading: false}));
   }
 }

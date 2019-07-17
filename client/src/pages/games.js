@@ -9,6 +9,8 @@ import {
   Button,
   Form,
   Select,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import qs from 'query-string';
 import PropTypes from 'prop-types';
@@ -36,13 +38,22 @@ export class Games extends React.Component {
       userID: parseInt(userID, 10),
       users: [],
       games: [],
+      isLoading: false,
     };
 
     this.getGames = this.getGames.bind(this);
   }
 
   render() {
-    const {games, error, user, users, userID, focusedGame} = this.state;
+    const {
+      games,
+      error,
+      user,
+      users,
+      userID,
+      focusedGame,
+      isLoading,
+    } = this.state;
 
     const userOptions = users.map(user => ({
       text: `${user.first_name} ${user.last_name}`,
@@ -82,6 +93,10 @@ export class Games extends React.Component {
           </div>
 
           <Divider />
+
+          <Dimmer inverted active={isLoading}>
+            <Loader>Loading Games</Loader>
+          </Dimmer>
 
           {focusedGame && (
             <GameDetails
@@ -146,6 +161,7 @@ export class Games extends React.Component {
 
   componentDidMount() {
     const {userID} = this.state;
+    this.setState({isLoading: true});
     this.getUsers();
     userID && this.getUser(userID);
     userID ? this.getGames(userID) : this.getGames();
@@ -165,7 +181,7 @@ export class Games extends React.Component {
 
   getGames(userID) {
     API.getGames(userID)
-      .then(res => this.setState({games: res.data.reverse()}))
-      .catch(error => this.setState({error}));
+      .then(res => this.setState({games: res.data.reverse(), isLoading: false}))
+      .catch(error => this.setState({error, isLoading: false}));
   }
 }

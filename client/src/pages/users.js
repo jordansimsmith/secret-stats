@@ -6,6 +6,8 @@ import {
   Message,
   Card,
   Divider,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import {CreateUser} from '../components/CreateUser';
 import {UserCard} from '../components/UserCard';
@@ -18,13 +20,14 @@ export class Users extends React.Component {
     this.state = {
       users: [],
       error: null,
+      isLoading: false,
     };
 
     this.getUsers = this.getUsers.bind(this);
   }
 
   render() {
-    const {users, error} = this.state;
+    const {users, error, isLoading} = this.state;
 
     return (
       <div className="content-wrap">
@@ -41,6 +44,10 @@ export class Users extends React.Component {
           </div>
 
           <Divider />
+
+          <Dimmer inverted active={isLoading}>
+            <Loader>Loading Users</Loader>
+          </Dimmer>
 
           <Message hidden={!error} color="red">
             <Message.Header>
@@ -67,12 +74,13 @@ export class Users extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({isLoading: true});
     this.getUsers();
   }
 
   getUsers() {
     API.getUsers()
-      .then(res => this.setState({users: res.data}))
-      .catch(error => this.setState({error}));
+      .then(res => this.setState({users: res.data, isLoading: false}))
+      .catch(error => this.setState({error, isLoading: false}));
   }
 }
