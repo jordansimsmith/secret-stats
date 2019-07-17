@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  description: Are You Hitler? Is a web application designed to track games of 'Secret Hitler' and display user statistics.
+  description: Secret Stats? Is a web application designed to track games of 'Secret Hitler' and display user statistics.
   version: 1.0.0
-  title: Are You Hitler?
+  title: Secret Stats
   contact:
     email: jordansimsmith@gmail.com
   license:
