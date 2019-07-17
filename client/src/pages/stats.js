@@ -105,7 +105,6 @@ export class Stats extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({isLoading: true});
     const {userID} = this.state;
     this.getUsers();
     userID && this.getUser(userID);
@@ -125,6 +124,7 @@ export class Stats extends React.Component {
   }
 
   getStats(userID) {
+    this.setState({isLoading: true});
     API.getStats(userID)
       .then(res => this.setState({stats: res.data, isLoading: false}))
       .catch(error => this.setState({error, isLoading: false}));
