@@ -10,7 +10,7 @@ export class Navigation extends React.Component {
         <Container>
           <Menu.Item as={Link} to="/" header>
             <Icon name="user secret" inverted size="big" />
-            Are You Hitler?
+            Secret Stats
           </Menu.Item>
           <Menu.Item as={Link} to="/about">
             About
