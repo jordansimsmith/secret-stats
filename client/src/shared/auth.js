@@ -3,9 +3,9 @@ import auth0 from 'auth0-js';
 class Auth {
   constructor() {
     this.auth0 = new auth0.WebAuth({
-      domain: 'are-you-hitler.auth0.com',
-      audience: 'https://are-you-hitler-api',
-      clientID: 'VdF04cFVzLURRRvn5rjhR7RE2tGtzTlz',
+      domain: 'secretstats.auth0.com',
+      audience: 'https://secret-stats-api',
+      clientID: 'o6Q1XwAvosqKIXV5UwjZJ5Hx2cudFQob',
       redirectUri: 'http://localhost:5000/callback',
       responseType: 'token id_token',
       scope: 'openid profile',
@@ -69,7 +69,7 @@ class Auth {
   signOut = () => {
     this.unsetSession();
     this.auth0.logout({
-      clientID: 'VdF04cFVzLURRRvn5rjhR7RE2tGtzTlz',
+      clientID: 'o6Q1XwAvosqKIXV5UwjZJ5Hx2cudFQob',
       returnTo: 'http://localhost:5000/',
     });
   };
