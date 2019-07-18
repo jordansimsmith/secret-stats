@@ -1,12 +1,15 @@
 import auth0 from 'auth0-js';
 
+const HOST =
+  process.env.NODE_ENV === 'production' ? 'secretstats.org' : 'localhost:5000';
+
 class Auth {
   constructor() {
     this.auth0 = new auth0.WebAuth({
       domain: 'secretstats.auth0.com',
       audience: 'https://secret-stats-api',
       clientID: 'o6Q1XwAvosqKIXV5UwjZJ5Hx2cudFQob',
-      redirectUri: 'http://localhost:5000/callback',
+      redirectUri: `http://${HOST}/callback`,
       responseType: 'token id_token',
       scope: 'openid profile',
     });
@@ -70,7 +73,7 @@ class Auth {
     this.unsetSession();
     this.auth0.logout({
       clientID: 'o6Q1XwAvosqKIXV5UwjZJ5Hx2cudFQob',
-      returnTo: 'http://localhost:5000/',
+      returnTo: `http://${HOST}/`,
     });
   };
 }

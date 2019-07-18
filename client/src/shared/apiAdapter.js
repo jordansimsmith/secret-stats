@@ -1,7 +1,7 @@
 import axios from 'axios';
 import auth from './auth';
 
-const PROD_HOST = 'localhost';
+const PROD_HOST = 'secretstats.org';
 const API =
   process.env.NODE_ENV === 'production'
     ? `http://${PROD_HOST}/api`
