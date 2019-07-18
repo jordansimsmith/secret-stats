@@ -9,7 +9,7 @@ export class Home extends React.Component {
         <Container>
           <Header as="h1" icon textAlign="center">
             <Icon name="user secret" />
-            <Header.Content>Are You Hitler?</Header.Content>
+            <Header.Content>Secret Stats</Header.Content>
           </Header>
           <div className="center" id="landing-button">
             <Button as={Link} to="/about" size="huge" color="blue">

@@ -18,7 +18,7 @@ export class Footer extends React.Component {
               </List.Item>
               <List.Item
                 as="a"
-                href="https://github.com/jordansimsmith/are-you-hitler">
+                href="https://github.com/jordansimsmith/secret-stats">
                 GitHub
               </List.Item>
               <List.Item as="a" href="https://jordan.sim-smith.co.nz/contact">

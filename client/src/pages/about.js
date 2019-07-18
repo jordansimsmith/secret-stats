@@ -38,7 +38,7 @@ export class About extends React.Component {
           <Segment>
             <Header as="h2">What is this webiste for?</Header>
             <p>
-              This website—Are You Hitler?—is a tool for recording outcomes of
+              This website—Secret Stats—is a tool for recording outcomes of
               Secret Hitler games between friends. Records of past games can be
               inspected on a per-user basis. Most importantly, various
               statistics concerning each user’s performance in different roles
@@ -46,7 +46,7 @@ export class About extends React.Component {
             </p>
 
             <p>
-              Get started with Are You Hitler? by
+              Get started with Secret Stats by
               <Link to="/users"> registering a group of users</Link> and
               <Link to="/games"> recording your first game.</Link>
             </p>

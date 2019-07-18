@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"github.com/jordansimsmith/are-you-hitler/api/models"
+	"github.com/jordansimsmith/secret-stats/api/models"
 )
 
 /*
