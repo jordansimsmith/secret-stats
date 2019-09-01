@@ -1,6 +1,8 @@
 # Secret Stats
 
-_Secret Stats_ Is a web application to track records of [Secret Hitler](https://www.secrethitler.com) boardgames, calculating statistics for each user.
+_Secret Stats_ Is a web application to track records of [Secret Hitler](https://www.secrethitler.com) boardgames, calculating statistics for each user. Secret stats was developed using microservices, with containerisation provided by Docker.
+
+![secret-stats](https://user-images.githubusercontent.com/18223858/64070922-ea1c7a00-ccc1-11e9-88df-ec6d425fc97e.png)
 
 ## Software Stack
 
